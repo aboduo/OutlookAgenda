@@ -1,0 +1,96 @@
+###
+# Swiftlint configuration file.
+# Latest version supported: 0.11.1
+# Any newer version hasn't been checked yet and might not follow the style guide.
+###
+
+opt_in_rules:
+  - array_init
+  - closure_spacing
+  - comma # k,v >> k, v
+  - contains_over_first_not_nil
+  - first_where
+  - force_cast # as!
+  - force_try # try!
+  - force_unwrapping # is evil!
+  - implicitly_unwrapped_optional
+  - leading_whitespace # does not allow the file to start with a new line
+  - legacy_constructor
+  - nimble_operator
+  - no_extension_access_modifier
+  - opening_brace # [].map(){ ... } >>> [].map() { ... }
+  - operator_whitespace # func  thing () {...} >>> func thing() {...}
+  - operator_usage_whitespace
+  - redundant_nil_coalescing
+  - return_arrow_whitespace # func thing()->Bool >>> func thing() -> Bool
+  - single_test_class
+  - sorted_imports
+  - statement_position # }else if { >>> } else if {
+  - trailing_newline # new line at the end of a file
+  - trailing_semicolon # no ;
+  - trailing_whitespace
+
+disabled_rules: # rule identifiers to exclude from running
+  - line_length
+  - function_body_length
+  - file_length
+  - type_body_length
+  - todo
+  - cyclomatic_complexity # limit the number of entries inside an enum or struct.
+  - nesting # Types should be nested at most 1 level deep
+  - function_parameter_count # Function Parameter Count Violation: Function should have 5 parameters or less
+  - type_name # types should start with a capital letter
+  - empty_count # use isEmpty
+  - xctfail_message
+
+excluded: # paths to ignore during linting. overridden by `included`.
+  - Submodules
+  - Vendor
+
+# rule parameters
+cyclomatic_complexity:
+  - 20 #warning
+  - 35 #error
+
+trailing_whitespace:
+  ignores_empty_lines: true
+
+file_length:
+  - 600 #warning
+  - 800 #error
+
+function_body_length:
+  - 800 #warning
+  - 1600 #error
+
+identifier_name:
+   max_length:
+     warning: 140
+     error: 140
+   min_length:
+     warning: 2
+     error: 2
+
+large_tuple:
+  warning: 4 
+  error: 4
+
+line_length:
+  - 300 #warning
+  - 350 #error
+
+type_body_length:
+  - 400 #warning
+  - 500 #error
+
+custom_rules:
+  multiple_empty_lines:
+    name: "Multiple Empty Lines"
+    regex: '((?:\s*\n){3,})'
+    message: "There are too many line breaks"
+    severity: error
+  unnecessary_type:
+    name: "Unnecessary Type"
+    regex: '[ a-zA-Z0-9]*(?:let|var) [ a-zA-Z0-9]*: ([a-zA-Z0-9]*) *= \1\('
+    message: "Type Definition Not Needed"
+    severity: error
