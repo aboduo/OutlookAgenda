@@ -24,15 +24,16 @@ class ContainerViewController: UIViewController {
         super.viewDidLoad()
         initView()
     }
-
-    
-    
 }
 
 
 extension ContainerViewController {
     private func initView() {
         self.title = "Title"
+        
+        // remove the bottom line of navigation bar
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .any, barMetrics: .default)
+        navigationController?.navigationBar.shadowImage = UIImage()
         
         let safeAreaLayoutGuide = view.safeAreaLayoutGuide
         
