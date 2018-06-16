@@ -2,23 +2,27 @@ import UIKit
 
 class CalendarHeaderView: UIView {
 
-    lazy private var stackView: UIStackView = {
+    private lazy var stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.accessibilityIdentifier = "stackView"
+        stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
         stackView.alignment = .center
         stackView.distribution = .fillEqually
-//        stackView.spacing = Constants.MainStackViewItemSpace
-//        stackView.layoutMargins = Constants.MainStackViewEdgeInsets
-//        stackView.isLayoutMarginsRelativeArrangement = true
         return stackView
+    }()
+    
+    private lazy var bottomLineView: UIView = {
+        let view = UIView.init(frame: .zero)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .gray
+        return view
     }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         addSubview(stackView)
-        stackView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.addEdgeInsetsConstraints(outerLayoutGuide: self, innerView: stackView, edgeInsets: .zero)
         
         /*
@@ -36,9 +40,12 @@ class CalendarHeaderView: UIView {
         let _ = weekDays.map { day in
             let label = createWeekLabel()
             label.text = day
-            label.backgroundColor = .red
             stackView.addArrangedSubview(label)
         }
+        
+        addSubview(bottomLineView)
+        NSLayoutConstraint.addEdgeInsetsConstraints(outerLayoutGuide: self, innerView: bottomLineView, edgeInsets: .zero, rectEdge: [.left, .bottom, .right])
+        bottomLineView.heightAnchor.constraint(equalToConstant: CGFloat(1) / UIScreen.main.scale).isActive = true
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -51,5 +58,4 @@ class CalendarHeaderView: UIView {
         label.textAlignment = .center
         return label
     }
-    
 }
