@@ -14,6 +14,7 @@ class CalendarHeaderView: UIView {
     
     private lazy var bottomLineView: UIView = {
         let view = UIView.init(frame: .zero)
+        view.accessibilityIdentifier = "bottomLineView"
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .gray
         return view

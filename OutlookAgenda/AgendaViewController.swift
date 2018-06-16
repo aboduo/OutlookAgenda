@@ -1,35 +1,60 @@
-//
-//  AgendaViewController.swift
-//  OutlookAgenda
-//
-//  Created by sheng on 2018/6/15.
-//  Copyright © 2018 sheng. All rights reserved.
-//
-
 import UIKit
+
+protocol AgendaViewControllerDelegate: class {
+    func agendaViewControllerBeginDragging(on agendaViewController: AgendaViewController)
+}
 
 class AgendaViewController: UIViewController {
 
+    weak var delegate: AgendaViewControllerDelegate?
+    
+    private lazy var tableView: UITableView = {
+        let tableView = UITableView(frame: .zero, style: .plain)
+        tableView.accessibilityIdentifier = "tableView"
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.showsVerticalScrollIndicator = false
+        
+        tableView.register(AgendaTableViewCell.self, forCellReuseIdentifier: AgendaTableViewCell.agendaTableViewCellIdentifier)
+        return tableView
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        initView()
     }
+}
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+// MARK: - Private
+
+extension AgendaViewController {
+    
+    private func initView() {
+        view.addSubview(tableView)
+        NSLayoutConstraint.addEdgeInsetsConstraints(outerLayoutGuide: view, innerView: tableView, edgeInsets: .zero)
+    }
+}
+
+extension AgendaViewController: UITableViewDataSource {
+    
+    public func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 30
     }
-    */
+    
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: AgendaTableViewCell.agendaTableViewCellIdentifier, for: indexPath)
+        
+        return cell
+    }
+}
 
+extension AgendaViewController: UITableViewDelegate {
+    public func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        delegate?.agendaViewControllerBeginDragging(on: self)
+    }
 }
