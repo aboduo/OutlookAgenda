@@ -7,13 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0472E4AB20D3A5E5004E6A18 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0472E4AA20D3A5E5004E6A18 /* CalendarViewController.swift */; };
+		0472E4AD20D3A690004E6A18 /* AgendaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0472E4AC20D3A690004E6A18 /* AgendaViewController.swift */; };
+		048CF90520D3C28E0094A654 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 048CF90220D3C28E0094A654 /* Assets.xcassets */; };
+		048CF90620D3C28E0094A654 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 048CF90320D3C28E0094A654 /* LaunchScreen.storyboard */; };
+		048CF90F20D3C3EA0094A654 /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048CF90E20D3C3EA0094A654 /* UIViewController+Extensions.swift */; };
+		048CF91120D40AF30094A654 /* CalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048CF91020D40AF30094A654 /* CalendarCell.swift */; };
+		048CF91320D410E60094A654 /* NSLayoutConstraint+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048CF91220D410E60094A654 /* NSLayoutConstraint+Extensions.swift */; };
 		04DDA7D320D20F7D00913CB2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04DDA7D220D20F7D00913CB2 /* AppDelegate.swift */; };
-		04DDA7D520D20F7D00913CB2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04DDA7D420D20F7D00913CB2 /* ViewController.swift */; };
-		04DDA7D820D20F7D00913CB2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 04DDA7D620D20F7D00913CB2 /* Main.storyboard */; };
-		04DDA7DA20D20F7F00913CB2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 04DDA7D920D20F7F00913CB2 /* Assets.xcassets */; };
-		04DDA7DD20D20F7F00913CB2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 04DDA7DB20D20F7F00913CB2 /* LaunchScreen.storyboard */; };
+		04DDA7D520D20F7D00913CB2 /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04DDA7D420D20F7D00913CB2 /* ContainerViewController.swift */; };
 		04DDA7E820D20F7F00913CB2 /* OutlookAgendaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04DDA7E720D20F7F00913CB2 /* OutlookAgendaTests.swift */; };
 		04DDA7F320D20F7F00913CB2 /* OutlookAgendaUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04DDA7F220D20F7F00913CB2 /* OutlookAgendaUITests.swift */; };
+		04FE7AB620D498E10043F116 /* CalendarHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04FE7AB520D498E10043F116 /* CalendarHeaderView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,12 +39,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0472E4AA20D3A5E5004E6A18 /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
+		0472E4AC20D3A690004E6A18 /* AgendaViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgendaViewController.swift; sourceTree = "<group>"; };
+		048CF90220D3C28E0094A654 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		048CF90420D3C28E0094A654 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		048CF90E20D3C3EA0094A654 /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
+		048CF91020D40AF30094A654 /* CalendarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCell.swift; sourceTree = "<group>"; };
+		048CF91220D410E60094A654 /* NSLayoutConstraint+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSLayoutConstraint+Extensions.swift"; sourceTree = "<group>"; };
 		04DDA7CF20D20F7D00913CB2 /* OutlookAgenda.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OutlookAgenda.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		04DDA7D220D20F7D00913CB2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		04DDA7D420D20F7D00913CB2 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		04DDA7D720D20F7D00913CB2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		04DDA7D920D20F7F00913CB2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		04DDA7DC20D20F7F00913CB2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		04DDA7D420D20F7D00913CB2 /* ContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
 		04DDA7DE20D20F7F00913CB2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		04DDA7E320D20F7F00913CB2 /* OutlookAgendaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OutlookAgendaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		04DDA7E720D20F7F00913CB2 /* OutlookAgendaTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutlookAgendaTests.swift; sourceTree = "<group>"; };
@@ -47,6 +56,7 @@
 		04DDA7EE20D20F7F00913CB2 /* OutlookAgendaUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OutlookAgendaUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		04DDA7F220D20F7F00913CB2 /* OutlookAgendaUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutlookAgendaUITests.swift; sourceTree = "<group>"; };
 		04DDA7F420D20F7F00913CB2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		04FE7AB520D498E10043F116 /* CalendarHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarHeaderView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,6 +84,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		048CF90120D3C28E0094A654 /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				048CF90220D3C28E0094A654 /* Assets.xcassets */,
+				048CF90320D3C28E0094A654 /* LaunchScreen.storyboard */,
+			);
+			path = Resource;
+			sourceTree = "<group>";
+		};
 		04DDA7C620D20F7D00913CB2 = {
 			isa = PBXGroup;
 			children = (
@@ -98,11 +117,15 @@
 			isa = PBXGroup;
 			children = (
 				04DDA7D220D20F7D00913CB2 /* AppDelegate.swift */,
-				04DDA7D420D20F7D00913CB2 /* ViewController.swift */,
-				04DDA7D620D20F7D00913CB2 /* Main.storyboard */,
-				04DDA7D920D20F7F00913CB2 /* Assets.xcassets */,
-				04DDA7DB20D20F7F00913CB2 /* LaunchScreen.storyboard */,
+				0472E4AC20D3A690004E6A18 /* AgendaViewController.swift */,
+				04DDA7D420D20F7D00913CB2 /* ContainerViewController.swift */,
+				0472E4AA20D3A5E5004E6A18 /* CalendarViewController.swift */,
+				048CF91020D40AF30094A654 /* CalendarCell.swift */,
+				04FE7AB520D498E10043F116 /* CalendarHeaderView.swift */,
+				048CF90E20D3C3EA0094A654 /* UIViewController+Extensions.swift */,
+				048CF91220D410E60094A654 /* NSLayoutConstraint+Extensions.swift */,
 				04DDA7DE20D20F7F00913CB2 /* Info.plist */,
+				048CF90120D3C28E0094A654 /* Resource */,
 			);
 			path = OutlookAgenda;
 			sourceTree = "<group>";
@@ -229,9 +252,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				04DDA7DD20D20F7F00913CB2 /* LaunchScreen.storyboard in Resources */,
-				04DDA7DA20D20F7F00913CB2 /* Assets.xcassets in Resources */,
-				04DDA7D820D20F7D00913CB2 /* Main.storyboard in Resources */,
+				048CF90520D3C28E0094A654 /* Assets.xcassets in Resources */,
+				048CF90620D3C28E0094A654 /* LaunchScreen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -256,7 +278,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				04DDA7D520D20F7D00913CB2 /* ViewController.swift in Sources */,
+				0472E4AD20D3A690004E6A18 /* AgendaViewController.swift in Sources */,
+				04FE7AB620D498E10043F116 /* CalendarHeaderView.swift in Sources */,
+				048CF91320D410E60094A654 /* NSLayoutConstraint+Extensions.swift in Sources */,
+				048CF91120D40AF30094A654 /* CalendarCell.swift in Sources */,
+				0472E4AB20D3A5E5004E6A18 /* CalendarViewController.swift in Sources */,
+				048CF90F20D3C3EA0094A654 /* UIViewController+Extensions.swift in Sources */,
+				04DDA7D520D20F7D00913CB2 /* ContainerViewController.swift in Sources */,
 				04DDA7D320D20F7D00913CB2 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -293,18 +321,10 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		04DDA7D620D20F7D00913CB2 /* Main.storyboard */ = {
+		048CF90320D3C28E0094A654 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				04DDA7D720D20F7D00913CB2 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		04DDA7DB20D20F7F00913CB2 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				04DDA7DC20D20F7F00913CB2 /* Base */,
+				048CF90420D3C28E0094A654 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
