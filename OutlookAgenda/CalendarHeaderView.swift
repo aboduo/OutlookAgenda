@@ -26,21 +26,10 @@ class CalendarHeaderView: UIView {
         addSubview(stackView)
         NSLayoutConstraint.addEdgeInsetsConstraints(outerLayoutGuide: self, innerView: stackView, edgeInsets: .zero)
         
-        /*
-         if we use single char as the key of localizedString, such as: "S", which may impact others,
-         so we can increase the key, such as: "S" -> "abbreviation of Sunday".
-         And adding a item in the english Localizable.strings: "abbreviation of Sunday" = "S"
-         */
-        let weekDays = [NSLocalizedString("S", comment: "Sunday"),
-                        NSLocalizedString("M", comment: "Monday"),
-                        NSLocalizedString("T", comment: "Tuesday"),
-                        NSLocalizedString("W", comment: "Wednesday"),
-                        NSLocalizedString("T", comment: "Thursday"),
-                        NSLocalizedString("F", comment: "Friday"),
-                        NSLocalizedString("S", comment: "Saturday")]
-        let _ = weekDays.map { day in
+        let gregorian = NSCalendar(calendarIdentifier: .gregorian)
+        let _ = gregorian?.veryShortWeekdaySymbols.map { weekDay in
             let label = createWeekLabel()
-            label.text = day
+            label.text = weekDay
             stackView.addArrangedSubview(label)
         }
         
