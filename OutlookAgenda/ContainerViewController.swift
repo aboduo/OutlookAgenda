@@ -22,7 +22,7 @@ class ContainerViewController: UIViewController {
         return viewController
     }()
     
-    lazy var calendarViewControllerHeightConstraint = calendarViewController.view.heightAnchor.constraint(equalToConstant: Constants.calendarShortHeight)
+    lazy var agendaViewControllerTopConstraint = agendaViewController.view.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: Constants.calendarShortHeight)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,11 +55,11 @@ extension ContainerViewController {
         calendarViewController.view.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor).isActive = true
         calendarViewController.view.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor).isActive = true
         calendarViewController.view.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor).isActive =  true
-        calendarViewControllerHeightConstraint.isActive = true
+        calendarViewController.view.heightAnchor.constraint(equalToConstant: Constants.calendarTallHeight).isActive = true
         
         agendaViewController.view.backgroundColor = .green
         addChildViewController(agendaViewController, to: view)
-        agendaViewController.view.topAnchor.constraint(equalTo: calendarViewController.view.bottomAnchor).isActive = true
+        agendaViewControllerTopConstraint.isActive = true
         agendaViewController.view.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor).isActive = true
         agendaViewController.view.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor).isActive =  true
         agendaViewController.view.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor).isActive = true
@@ -71,11 +71,11 @@ extension ContainerViewController {
 extension ContainerViewController: CalendarViewControllerDelegate {
     
     func calendarViewControllerBeginDragging(on calendarViewController: CalendarViewController) {
-        guard Int(calendarViewController.view.bounds.size.height) != Int(Constants.calendarTallHeight)  else { return }
+        guard Int(agendaViewControllerTopConstraint.constant) != Int(Constants.calendarTallHeight)  else { return }
         
 //        view.layoutIfNeeded()
-        UIView.animate(withDuration: 0.25) {
-            self.calendarViewControllerHeightConstraint.constant = Constants.calendarTallHeight
+        UIView.animate(withDuration: 0.15) {
+            self.agendaViewControllerTopConstraint.constant = Constants.calendarTallHeight
             self.view.layoutIfNeeded()
         }
     }
@@ -86,11 +86,11 @@ extension ContainerViewController: CalendarViewControllerDelegate {
 extension ContainerViewController: AgendaViewControllerDelegate {
     
     func agendaViewControllerBeginDragging(on agendaViewController: AgendaViewController) {
-        guard Int(calendarViewController.view.bounds.size.height) != Int(Constants.calendarShortHeight)  else { return }
+        guard Int(agendaViewControllerTopConstraint.constant) != Int(Constants.calendarShortHeight)  else { return }
         
 //        view.layoutIfNeeded()
-        UIView.animate(withDuration: 0.25) {
-            self.calendarViewControllerHeightConstraint.constant = Constants.calendarShortHeight
+        UIView.animate(withDuration: 0.15) {
+            self.agendaViewControllerTopConstraint.constant = Constants.calendarShortHeight
             self.view.layoutIfNeeded()
         }
     }
