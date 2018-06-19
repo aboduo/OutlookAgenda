@@ -9,8 +9,8 @@ class CalendarViewController: UIViewController {
     struct Constants {
         static let calendarHeadViewHeiht: CGFloat = 30
         static let calendarRowHeight: CGFloat = 48
-        static let minDateString = ""
         
+        // define how many weeks supported
         static let previousWeeksCount = 500
         static let afterWeeksCount = 500
     }
@@ -73,9 +73,9 @@ class CalendarViewController: UIViewController {
         
         // At this point, the constraints do not act, so change the contentOffset of collectionView is not active.
         // There are some workarounds, I think this is easier one.
-        DispatchQueue.main.async {
-            self.collectionView.scrollToItem(at: IndexPath(item: 1000, section: 0), at: .top, animated: false)
-        }
+//        DispatchQueue.main.async {
+//            self.collectionView.scrollToItem(at: IndexPath(item: 1000, section: 0), at: .top, animated: false)
+//        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -100,9 +100,9 @@ extension CalendarViewController {
         collectionView.topAnchor.constraint(equalTo: headerView.bottomAnchor).isActive = true
         NSLayoutConstraint.addEdgeInsetsConstraints(outerLayoutGuide: view, innerView: collectionView, edgeInsets: .zero, rectEdge: [.left, .bottom, .right])
         
-        view.addSubview(tableView)
-        tableView.backgroundColor = .brown
-        NSLayoutConstraint.addEdgeInsetsConstraints(outerLayoutGuide: view, innerView: tableView, edgeInsets: UIEdgeInsets(top: 0, left: 200, bottom: 0, right: 0))
+//        view.addSubview(tableView)
+//        tableView.backgroundColor = .brown
+//        NSLayoutConstraint.addEdgeInsetsConstraints(outerLayoutGuide: view, innerView: tableView, edgeInsets: UIEdgeInsets(top: 0, left: 200, bottom: 0, right: 0))
         
     }
     
@@ -122,15 +122,10 @@ extension CalendarViewController: UICollectionViewDataSource {
         
         print("collectionView indexPath = \(indexPath)")
         
-//        var currentStartWeekday = Date()
-//        var interval = TimeInterval()
-//        let res = gregorian.dateInterval(of: .weekOfYear, start: &currentStartWeekday, interval: &interval, for: Date())
-//        assert(res)
-//
-//        let day = gregorian.component(.day, from: currentStartWeekday)
-//
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CalendarCollectionViewCell.calendarCellIdentifier, for: indexPath) as! CalendarCollectionViewCell
-//        cell.label.text = "\(day)"
+        if let date = dataSource?.date(at: indexPath.item) {
+            cell.load(date: date)
+        }
         
         return cell
     }

@@ -6,22 +6,25 @@ class CalendarDataSource {
     struct Constants {
         static let weeksCount = 1 * 2 // all weeks count before and after current week
     }
+    
     private let gregorian: Calendar = {
         var calendar = Calendar(identifier: .gregorian)
         calendar.timeZone = TimeZone.current
         calendar.locale = Locale.current
         return calendar
     }()
+    
     private let startDate: Date
     private let endDate: Date
     let allDaysCount: Int
     
     init?(previousWeeksCount: Int, afterWeeksCount: Int) {
 
+        allDaysCount = ( previousWeeksCount + 1 + afterWeeksCount ) * 7
+        
         let weekday = gregorian.component(.weekday, from: Date())
         let previousDaysCount = previousWeeksCount * 7 + ( weekday - gregorian.firstWeekday + 7 ) % 7
-        allDaysCount = ( previousDaysCount + 1 + afterWeeksCount ) * 7
-        let firstDate = gregorian.date(byAdding: .day, value: previousDaysCount, to: Date())
+        let firstDate = gregorian.date(byAdding: .day, value: -previousDaysCount, to: Date())
         guard let tempFirstDate = firstDate else {
             return nil
         }
@@ -34,5 +37,8 @@ class CalendarDataSource {
         endDate = tempLastDate
     }
     
+    func date(at index: Int) -> Date? {
+        return gregorian.date(byAdding: .day, value: index, to: startDate)
+    }
     
 }
