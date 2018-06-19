@@ -8,13 +8,15 @@ class AgendaViewController: UIViewController {
 
     weak var delegate: AgendaViewControllerDelegate?
     
-    private lazy var tableView: UITableView = {
+    lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .plain)
         tableView.accessibilityIdentifier = "tableView"
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.dataSource = self
         tableView.delegate = self
         tableView.showsVerticalScrollIndicator = false
+        
+        tableView.backgroundColor = .brown
         
         tableView.register(AgendaTableViewCell.self, forCellReuseIdentifier: AgendaTableViewCell.agendaTableViewCellIdentifier)
         return tableView
@@ -31,6 +33,7 @@ class AgendaViewController: UIViewController {
 extension AgendaViewController {
     
     private func initView() {
+        
         view.addSubview(tableView)
         NSLayoutConstraint.addEdgeInsetsConstraints(outerLayoutGuide: view, innerView: tableView, edgeInsets: .zero)
     }
@@ -57,4 +60,6 @@ extension AgendaViewController: UITableViewDelegate {
     public func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         delegate?.agendaViewControllerBeginDragging(on: self)
     }
+    
+
 }

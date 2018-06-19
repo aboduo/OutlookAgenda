@@ -11,12 +11,14 @@ class ContainerViewController: UIViewController {
     lazy private var calendarViewController: CalendarViewController = {
         let viewController = CalendarViewController()
         viewController.delegate = self
+        viewController.view.translatesAutoresizingMaskIntoConstraints = false
         return viewController
     }()
     
     lazy private var agendaViewController: AgendaViewController = {
         let viewController = AgendaViewController()
         viewController.delegate = self
+        viewController.view.translatesAutoresizingMaskIntoConstraints = false
         return viewController
     }()
     
@@ -25,6 +27,13 @@ class ContainerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         initView()
+        
+        
+//        let gesture = calendarViewController.collectionView.panGestureRecognizer
+//        calendarViewController.collectionView.removeGestureRecognizer(gesture)
+//        agendaViewController.tableView.addGestureRecognizer(gesture)
+        
+//        gesture.addTarget(agendaViewController.tableView, action: #selector(handlePan(_:)))
     }
 }
 
@@ -43,7 +52,6 @@ extension ContainerViewController {
         
         calendarViewController.view.backgroundColor = .brown
         addChildViewController(calendarViewController, to: view)
-        calendarViewController.view.translatesAutoresizingMaskIntoConstraints = false
         calendarViewController.view.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor).isActive = true
         calendarViewController.view.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor).isActive = true
         calendarViewController.view.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor).isActive =  true
@@ -51,7 +59,6 @@ extension ContainerViewController {
         
         agendaViewController.view.backgroundColor = .green
         addChildViewController(agendaViewController, to: view)
-        agendaViewController.view.translatesAutoresizingMaskIntoConstraints = false
         agendaViewController.view.topAnchor.constraint(equalTo: calendarViewController.view.bottomAnchor).isActive = true
         agendaViewController.view.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor).isActive = true
         agendaViewController.view.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor).isActive =  true
@@ -66,7 +73,7 @@ extension ContainerViewController: CalendarViewControllerDelegate {
     func calendarViewControllerBeginDragging(on calendarViewController: CalendarViewController) {
         guard Int(calendarViewController.view.bounds.size.height) != Int(Constants.calendarTallHeight)  else { return }
         
-        view.layoutIfNeeded()
+//        view.layoutIfNeeded()
         UIView.animate(withDuration: 0.25) {
             self.calendarViewControllerHeightConstraint.constant = Constants.calendarTallHeight
             self.view.layoutIfNeeded()
@@ -81,11 +88,17 @@ extension ContainerViewController: AgendaViewControllerDelegate {
     func agendaViewControllerBeginDragging(on agendaViewController: AgendaViewController) {
         guard Int(calendarViewController.view.bounds.size.height) != Int(Constants.calendarShortHeight)  else { return }
         
-        view.layoutIfNeeded()
+//        view.layoutIfNeeded()
         UIView.animate(withDuration: 0.25) {
             self.calendarViewControllerHeightConstraint.constant = Constants.calendarShortHeight
             self.view.layoutIfNeeded()
         }
+    }
+}
+
+extension ContainerViewController: UIGestureRecognizerDelegate {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
     }
 }
 
