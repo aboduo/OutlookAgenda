@@ -33,7 +33,7 @@ extension UILayoutGuide: UILayoutGuideProtocol {
 extension NSLayoutConstraint {
     
     @discardableResult
-    static func addEdgeInsetsConstraints(outerLayoutGuide: UILayoutGuideProtocol, innerView: UIView, edgeInsets: UIEdgeInsets, rectEdge: UIRectEdge = .all) -> (topConstraint: NSLayoutConstraint?, leadingConstraint: NSLayoutConstraint?, bottomConstraint: NSLayoutConstraint?, trailingConstraint: NSLayoutConstraint?) {
+    static func addEdgeInsetsConstraints(outerLayoutGuide: UILayoutGuideProtocol, innerView: UIView, edgeInsets: UIEdgeInsets = .zero, rectEdge: UIRectEdge = .all) -> (topConstraint: NSLayoutConstraint?, leadingConstraint: NSLayoutConstraint?, bottomConstraint: NSLayoutConstraint?, trailingConstraint: NSLayoutConstraint?) {
         
         var topConstraint: NSLayoutConstraint?
         var leadingConstraint: NSLayoutConstraint?
@@ -62,35 +62,4 @@ extension NSLayoutConstraint {
         
         return (topConstraint, leadingConstraint, bottomConstraint, trailingConstraint)
     }
-    
-//    @discardableResult
-//    static func addEdgeInsetsConstraints(outerView: UIView, innerView: UIView, edgeInsets: UIEdgeInsets, rectEdge: UIRectEdge = .all) -> (topConstraint: NSLayoutConstraint?, leadingConstraint: NSLayoutConstraint?, bottomConstraint: NSLayoutConstraint?, trailingConstraint: NSLayoutConstraint?) {
-//        
-//        var topConstraint: NSLayoutConstraint?
-//        var leadingConstraint: NSLayoutConstraint?
-//        var bottomConstraint: NSLayoutConstraint?
-//        var trailingConstraint: NSLayoutConstraint?
-//        
-//        if rectEdge.contains(.top) {
-//            topConstraint = innerView.topAnchor.constraint(equalTo: outerView.topAnchor, constant: edgeInsets.top)
-//            topConstraint?.isActive = true
-//        }
-//        
-//        if rectEdge.contains(.left) {
-//            leadingConstraint = innerView.leadingAnchor.constraint(equalTo: outerView.leadingAnchor, constant: edgeInsets.left)
-//            leadingConstraint?.isActive = true
-//        }
-//        
-//        if rectEdge.contains(.bottom) {
-//            bottomConstraint = outerView.bottomAnchor.constraint(equalTo: innerView.bottomAnchor, constant: edgeInsets.bottom)
-//            bottomConstraint?.isActive = true
-//        }
-//        
-//        if rectEdge.contains(.right) {
-//            trailingConstraint = outerView.trailingAnchor.constraint(equalTo: innerView.trailingAnchor, constant: edgeInsets.right)
-//            trailingConstraint?.isActive = true
-//        }
-//        
-//        return (topConstraint, leadingConstraint, bottomConstraint, trailingConstraint)
-//    }
 }
