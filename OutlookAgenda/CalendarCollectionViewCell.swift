@@ -11,6 +11,13 @@ final class CalendarCollectionViewCell: UICollectionViewCell {
         view.backgroundColor = .gray
         return view
     }()
+
+    var label: UILabel = {
+        let label = UILabel(frame: .zero)
+        label.accessibilityIdentifier = "label"
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
     
     // MARK: - Lifecycle Methods
     
@@ -22,9 +29,14 @@ final class CalendarCollectionViewCell: UICollectionViewCell {
         addSubview(bottomLineView)
         NSLayoutConstraint.addEdgeInsetsConstraints(outerLayoutGuide: self, innerView: bottomLineView, edgeInsets: .zero, rectEdge: [.left, .bottom, .right])
         bottomLineView.heightAnchor.constraint(equalToConstant: CGFloat(1) / UIScreen.main.scale).isActive = true
+        
+        addSubview(label)
+        NSLayoutConstraint.addEdgeInsetsConstraints(outerLayoutGuide: self, innerView: label)
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("This subclass does not support NSCoding.")
     }
+    
+    
 }
