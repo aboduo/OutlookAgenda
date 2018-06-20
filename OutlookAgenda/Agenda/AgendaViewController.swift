@@ -7,7 +7,8 @@ protocol AgendaViewControllerDelegate: class {
 class AgendaViewController: UIViewController {
 
     weak var delegate: AgendaViewControllerDelegate?
-    private let dataSource: CalendarDataSource
+    private let calendarDataSource: CalendarDataSource
+    
     
     lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .plain)
@@ -26,7 +27,7 @@ class AgendaViewController: UIViewController {
     // MARK: - Lifecycle Methods
     
     init(calendarDataSource: CalendarDataSource) {
-        self.dataSource = calendarDataSource
+        self.calendarDataSource = calendarDataSource
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -54,7 +55,7 @@ extension AgendaViewController {
 extension AgendaViewController: UITableViewDataSource {
     
     public func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return calendarDataSource.allDaysCount
     }
     
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

@@ -29,6 +29,7 @@ class AgendaSectionHeaderView: UIView {
         NSLayoutConstraint.addEdgeInsetsConstraints(outerLayoutGuide: safeAreaLayoutGuide, innerView: stackView)
         
         stackView.addArrangedSubview(label)
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
