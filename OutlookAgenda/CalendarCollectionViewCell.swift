@@ -14,7 +14,7 @@ final class CalendarCollectionViewCell: UICollectionViewCell {
 
     private lazy var monthLabel: UILabel = {
         let label = UILabel(frame: .zero)
-        label.accessibilityIdentifier = "label"
+        label.accessibilityIdentifier = "monthLabel"
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 14, weight: .light)
         return label
@@ -22,7 +22,7 @@ final class CalendarCollectionViewCell: UICollectionViewCell {
     
     private lazy var dayLabel: UILabel = {
         let label = UILabel(frame: .zero)
-        label.accessibilityIdentifier = "label"
+        label.accessibilityIdentifier = "dayLabel"
         label.translatesAutoresizingMaskIntoConstraints = false
 //        label.font = UIFont.systemFont(ofSize: 17, weight: .regular)
         return label
@@ -30,7 +30,7 @@ final class CalendarCollectionViewCell: UICollectionViewCell {
     
     private lazy var yearLabel: UILabel = {
         let label = UILabel(frame: .zero)
-        label.accessibilityIdentifier = "label"
+        label.accessibilityIdentifier = "yearLabel"
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 14, weight: .light)
         return label
