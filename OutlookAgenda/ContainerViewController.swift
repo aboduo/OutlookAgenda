@@ -25,7 +25,7 @@ class ContainerViewController: UIViewController {
     lazy private var agendaViewController: AgendaViewController? = {
         guard let calendarDataSource = calendarDataSource else { return nil }
         
-        let viewController = AgendaViewController(calendarDataSource: calendarDataSource)
+        let viewController = AgendaViewController(calendarDataSource: calendarDataSource, agendaDataSource: AgendaDataSource())
         viewController.delegate = self
         viewController.view.translatesAutoresizingMaskIntoConstraints = false
         return viewController

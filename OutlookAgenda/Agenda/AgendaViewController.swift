@@ -8,7 +8,7 @@ class AgendaViewController: UIViewController {
 
     weak var delegate: AgendaViewControllerDelegate?
     private let calendarDataSource: CalendarDataSource
-    
+    private let agendaDataSource: AgendaDataSource
     
     lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .plain)
@@ -26,8 +26,9 @@ class AgendaViewController: UIViewController {
     
     // MARK: - Lifecycle Methods
     
-    init(calendarDataSource: CalendarDataSource) {
+    init(calendarDataSource: CalendarDataSource, agendaDataSource: AgendaDataSource) {
         self.calendarDataSource = calendarDataSource
+        self.agendaDataSource = agendaDataSource
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -50,6 +51,13 @@ extension AgendaViewController {
         view.addSubview(tableView)
         NSLayoutConstraint.addEdgeInsetsConstraints(outerLayoutGuide: view, innerView: tableView, edgeInsets: .zero)
     }
+    
+    private func getEvents(at section: Int) -> [AgendaEvent]? {
+        if let date = calendarDataSource.date(at: section), let events = agendaDataSource.agendaEvents(at: date) {
+            return events
+        }
+        return nil
+    }
 }
 
 extension AgendaViewController: UITableViewDataSource {
@@ -59,12 +67,23 @@ extension AgendaViewController: UITableViewDataSource {
     }
     
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 30
+        if let events = getEvents(at: section) {
+            return events.count
+        }
+        return 1
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: AgendaTableViewCell.agendaTableViewCellIdentifier, for: indexPath)
+        guard let agendaCell = cell as? AgendaTableViewCell  else {
+            return cell
+        }
         
+        var event: AgendaEvent? = nil
+        if let events = getEvents(at: indexPath.section), events.count > indexPath.row {
+            event = events[indexPath.row]
+        }
+        agendaCell.load(event: event)
         return cell
     }
 }
