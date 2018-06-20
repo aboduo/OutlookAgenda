@@ -9,10 +9,6 @@ class CalendarViewController: UIViewController {
     struct Constants {
         static let calendarHeadViewHeiht: CGFloat = 30
         static let calendarRowHeight: CGFloat = 48
-        
-        // define how many weeks supported
-        static let previousWeeksCount = 500
-        static let afterWeeksCount = 500
     }
     
     weak var delegate: CalendarViewControllerDelegate?
@@ -62,9 +58,18 @@ class CalendarViewController: UIViewController {
         return formatter
     }()
     
-    private let dataSource = CalendarDataSource(previousWeeksCount: Constants.previousWeeksCount, afterWeeksCount: Constants.afterWeeksCount)
+    private let dataSource: CalendarDataSource
     
     // MARK: - Lifecycle Methods
+    
+    init(calendarDataSource: CalendarDataSource) {
+        self.dataSource = calendarDataSource
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -115,7 +120,7 @@ extension CalendarViewController {
 
 extension CalendarViewController: UICollectionViewDataSource {
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return dataSource?.allDaysCount ?? 0
+        return dataSource.allDaysCount
     }
     
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -123,7 +128,7 @@ extension CalendarViewController: UICollectionViewDataSource {
         print("collectionView indexPath = \(indexPath)")
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CalendarCollectionViewCell.calendarCellIdentifier, for: indexPath) as! CalendarCollectionViewCell
-        if let date = dataSource?.date(at: indexPath.item) {
+        if let date = dataSource.date(at: indexPath.item) {
             cell.load(date: date)
         }
         

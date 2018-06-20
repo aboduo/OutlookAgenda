@@ -7,6 +7,7 @@ protocol AgendaViewControllerDelegate: class {
 class AgendaViewController: UIViewController {
 
     weak var delegate: AgendaViewControllerDelegate?
+    private let dataSource: CalendarDataSource
     
     lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .plain)
@@ -21,6 +22,17 @@ class AgendaViewController: UIViewController {
         tableView.register(AgendaTableViewCell.self, forCellReuseIdentifier: AgendaTableViewCell.agendaTableViewCellIdentifier)
         return tableView
     }()
+    
+    // MARK: - Lifecycle Methods
+    
+    init(calendarDataSource: CalendarDataSource) {
+        self.dataSource = calendarDataSource
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
