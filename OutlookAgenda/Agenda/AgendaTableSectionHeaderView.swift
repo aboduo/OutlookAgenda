@@ -10,7 +10,7 @@ class AgendaTableSectionHeaderView: UITableViewHeaderFooterView {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
         stackView.alignment = .center
-        stackView.distribution = .fillEqually
+        stackView.distribution = .fill
         return stackView
     }()
     
@@ -23,13 +23,22 @@ class AgendaTableSectionHeaderView: UITableViewHeaderFooterView {
         return label
     }()
     
+    private lazy var weatherImageView: UIImageView = {
+        let imageView = UIImageView(frame: .zero)
+        imageView.accessibilityIdentifier = "weatherImageView"
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+    
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
     
         addSubview(stackView)
-        NSLayoutConstraint.addEdgeInsetsConstraints(outerLayoutGuide: safeAreaLayoutGuide, innerView: stackView)
+        NSLayoutConstraint.addEdgeInsetsConstraints(outerLayoutGuide: safeAreaLayoutGuide, innerView: stackView, edgeInsets: UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12))
         
+        label.setContentHuggingPriority(.defaultLow, for: .horizontal)
         stackView.addArrangedSubview(label)
+        stackView.addArrangedSubview(weatherImageView)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -39,10 +48,14 @@ class AgendaTableSectionHeaderView: UITableViewHeaderFooterView {
     override func prepareForReuse() {
         super.prepareForReuse()
         label.text = nil
+        weatherImageView.image = nil
     }
     
     func load(date: Date) {
         let dateString = date.string(dateFormat: "EEEE, d MMMM")
         label.text = dateString
+        
+        let weatherImageName = WeatherDataSource.weather(at: date).weatherIco()
+        weatherImageView.image = UIImage(named: weatherImageName)
     }
 }

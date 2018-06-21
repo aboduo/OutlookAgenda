@@ -9,7 +9,6 @@ class AgendaDataSource {
         return [day0: [event0]]
     }()
     
-    
     func agendaEvents(at date: Date) -> [AgendaEvent]? {
         return AgendaDataSource.agendaEvents[date]
     }

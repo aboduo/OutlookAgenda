@@ -17,6 +17,7 @@
 		0429681320DA919400586E7B /* AgendaDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0429681220DA919400586E7B /* AgendaDataSource.swift */; };
 		0429681520DA982500586E7B /* AgendaEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0429681420DA982500586E7B /* AgendaEvent.swift */; };
 		0429681720DAAE6E00586E7B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0429681620DAAE6E00586E7B /* Images.xcassets */; };
+		045E756520DB938800B6D0A1 /* WeatherDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045E756420DB938800B6D0A1 /* WeatherDataSource.swift */; };
 		048CF90620D3C28E0094A654 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 048CF90320D3C28E0094A654 /* LaunchScreen.storyboard */; };
 		04973A3520D4F02A008DDA36 /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04973A3320D4F02A008DDA36 /* UIViewController+Extensions.swift */; };
 		04973A3620D4F02A008DDA36 /* NSLayoutConstraint+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04973A3420D4F02A008DDA36 /* NSLayoutConstraint+Extensions.swift */; };
@@ -57,6 +58,7 @@
 		0429681220DA919400586E7B /* AgendaDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgendaDataSource.swift; sourceTree = "<group>"; };
 		0429681420DA982500586E7B /* AgendaEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgendaEvent.swift; sourceTree = "<group>"; };
 		0429681620DAAE6E00586E7B /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		045E756420DB938800B6D0A1 /* WeatherDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherDataSource.swift; sourceTree = "<group>"; };
 		048CF90420D3C28E0094A654 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		04973A3320D4F02A008DDA36 /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
 		04973A3420D4F02A008DDA36 /* NSLayoutConstraint+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSLayoutConstraint+Extensions.swift"; sourceTree = "<group>"; };
@@ -108,6 +110,7 @@
 				0429680220DA903100586E7B /* AgendaTableSectionHeaderView.swift */,
 				0429680320DA903100586E7B /* AgendaTableViewCell.swift */,
 				0429680120DA903100586E7B /* AgendaViewController.swift */,
+				045E756420DB938800B6D0A1 /* WeatherDataSource.swift */,
 			);
 			path = Agenda;
 			sourceTree = "<group>";
@@ -352,6 +355,7 @@
 				04973A3620D4F02A008DDA36 /* NSLayoutConstraint+Extensions.swift in Sources */,
 				0429680A20DA903100586E7B /* AgendaTableSectionHeaderView.swift in Sources */,
 				0429680920DA903100586E7B /* AgendaViewController.swift in Sources */,
+				045E756520DB938800B6D0A1 /* WeatherDataSource.swift in Sources */,
 				04DDA7D520D20F7D00913CB2 /* ContainerViewController.swift in Sources */,
 				04DDA7D320D20F7D00913CB2 /* AppDelegate.swift in Sources */,
 				0429680E20DA903100586E7B /* CalendarDataSource.swift in Sources */,
