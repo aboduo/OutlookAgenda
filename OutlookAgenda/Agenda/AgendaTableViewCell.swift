@@ -2,7 +2,7 @@ import UIKit
 
 class AgendaTableViewCell: UITableViewCell {
     
-    static let agendaTableViewCellIdentifier = "agendaTableViewCellIdentifier"
+    static let reuseIdentifier = "AgendaTableViewCellReuseIdentifier"
 
     private lazy var timeStackView: UIStackView = {
         let stackView = UIStackView()

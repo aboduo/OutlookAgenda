@@ -40,17 +40,17 @@ class CalendarViewController: UIViewController {
         return collectionView
     }()
     
-    lazy var tableView: UITableView = {
-        let tableView = UITableView(frame: .zero, style: .plain)
-        tableView.accessibilityIdentifier = "tableView"
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.dataSource = self
-        tableView.delegate = self
-        tableView.showsVerticalScrollIndicator = false
-        
-        tableView.register(AgendaTableViewCell.self, forCellReuseIdentifier: AgendaTableViewCell.agendaTableViewCellIdentifier)
-        return tableView
-    }()
+//    lazy var tableView: UITableView = {
+//        let tableView = UITableView(frame: .zero, style: .plain)
+//        tableView.accessibilityIdentifier = "tableView"
+//        tableView.translatesAutoresizingMaskIntoConstraints = false
+//        tableView.dataSource = self
+//        tableView.delegate = self
+//        tableView.showsVerticalScrollIndicator = false
+//
+//        tableView.register(AgendaTableViewCell.self, forCellReuseIdentifier: AgendaTableViewCell.agendaTableViewCellIdentifier)
+//        return tableView
+//    }()
     
     private let formatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -165,7 +165,7 @@ extension CalendarViewController: UITableViewDataSource {
         
         print("tableView indexPath = \(indexPath)")
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: AgendaTableViewCell.agendaTableViewCellIdentifier, for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: AgendaTableViewCell.reuseIdentifier, for: indexPath)
         
         return cell
     }

@@ -16,7 +16,7 @@ open class DatePresenter {
 
 extension Date {
     public func string(dateFormat: String) -> String {
-        return DatePresenter.string(from: self)
+        return DatePresenter.string(from: self, dateFormat: dateFormat)
     }
     
 

@@ -20,7 +20,8 @@ class AgendaViewController: UIViewController {
         
         tableView.backgroundColor = .brown
         
-        tableView.register(AgendaTableViewCell.self, forCellReuseIdentifier: AgendaTableViewCell.agendaTableViewCellIdentifier)
+        tableView.register(AgendaTableViewCell.self, forCellReuseIdentifier: AgendaTableViewCell.reuseIdentifier)
+        tableView.register(AgendaTableSectionHeaderView.self, forHeaderFooterViewReuseIdentifier: AgendaTableSectionHeaderView.reuseIdentifier)
         return tableView
     }()
     
@@ -74,7 +75,7 @@ extension AgendaViewController: UITableViewDataSource {
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: AgendaTableViewCell.agendaTableViewCellIdentifier, for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: AgendaTableViewCell.reuseIdentifier, for: indexPath)
         guard let agendaCell = cell as? AgendaTableViewCell  else {
             return cell
         }
@@ -93,5 +94,16 @@ extension AgendaViewController: UITableViewDelegate {
         delegate?.agendaViewControllerBeginDragging(on: self)
     }
     
-
+    public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 20
+    }
+    
+    public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: AgendaTableSectionHeaderView.reuseIdentifier)
+        if let agendaSectionHeaderView = headerView as? AgendaTableSectionHeaderView {
+            let date = calendarDataSource.date(at: section) ?? Date()
+            agendaSectionHeaderView.load(date: date)
+        }
+        return headerView
+    }
 }

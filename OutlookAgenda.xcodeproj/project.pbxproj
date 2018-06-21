@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0429680920DA903100586E7B /* AgendaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0429680120DA903100586E7B /* AgendaViewController.swift */; };
-		0429680A20DA903100586E7B /* AgendaSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0429680220DA903100586E7B /* AgendaSectionHeaderView.swift */; };
+		0429680A20DA903100586E7B /* AgendaTableSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0429680220DA903100586E7B /* AgendaTableSectionHeaderView.swift */; };
 		0429680B20DA903100586E7B /* AgendaTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0429680320DA903100586E7B /* AgendaTableViewCell.swift */; };
 		0429680C20DA903100586E7B /* CalendarCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0429680520DA903100586E7B /* CalendarCollectionViewCell.swift */; };
 		0429680D20DA903100586E7B /* CalendarHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0429680620DA903100586E7B /* CalendarHeaderView.swift */; };
@@ -48,7 +48,7 @@
 
 /* Begin PBXFileReference section */
 		0429680120DA903100586E7B /* AgendaViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AgendaViewController.swift; sourceTree = "<group>"; };
-		0429680220DA903100586E7B /* AgendaSectionHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AgendaSectionHeaderView.swift; sourceTree = "<group>"; };
+		0429680220DA903100586E7B /* AgendaTableSectionHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AgendaTableSectionHeaderView.swift; sourceTree = "<group>"; };
 		0429680320DA903100586E7B /* AgendaTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AgendaTableViewCell.swift; sourceTree = "<group>"; };
 		0429680520DA903100586E7B /* CalendarCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarCollectionViewCell.swift; sourceTree = "<group>"; };
 		0429680620DA903100586E7B /* CalendarHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarHeaderView.swift; sourceTree = "<group>"; };
@@ -105,7 +105,7 @@
 			children = (
 				0429681220DA919400586E7B /* AgendaDataSource.swift */,
 				0429681420DA982500586E7B /* AgendaEvent.swift */,
-				0429680220DA903100586E7B /* AgendaSectionHeaderView.swift */,
+				0429680220DA903100586E7B /* AgendaTableSectionHeaderView.swift */,
 				0429680320DA903100586E7B /* AgendaTableViewCell.swift */,
 				0429680120DA903100586E7B /* AgendaViewController.swift */,
 			);
@@ -350,7 +350,7 @@
 				04973A3520D4F02A008DDA36 /* UIViewController+Extensions.swift in Sources */,
 				0429681320DA919400586E7B /* AgendaDataSource.swift in Sources */,
 				04973A3620D4F02A008DDA36 /* NSLayoutConstraint+Extensions.swift in Sources */,
-				0429680A20DA903100586E7B /* AgendaSectionHeaderView.swift in Sources */,
+				0429680A20DA903100586E7B /* AgendaTableSectionHeaderView.swift in Sources */,
 				0429680920DA903100586E7B /* AgendaViewController.swift in Sources */,
 				04DDA7D520D20F7D00913CB2 /* ContainerViewController.swift in Sources */,
 				04DDA7D320D20F7D00913CB2 /* AppDelegate.swift in Sources */,
@@ -532,7 +532,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.test.OutlookAgenda;
+				PRODUCT_BUNDLE_IDENTIFIER = com.demo.OutlookAgenda;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.0;
@@ -552,7 +552,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.test.OutlookAgenda;
+				PRODUCT_BUNDLE_IDENTIFIER = com.demo.OutlookAgenda;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.0;

@@ -1,7 +1,8 @@
 import Foundation
 import UIKit
 
-class AgendaSectionHeaderView: UIView {
+class AgendaTableSectionHeaderView: UITableViewHeaderFooterView {
+    static let reuseIdentifier = "AgendaSectionHeaderViewReuseIndentifier"
     
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView()
@@ -22,17 +23,26 @@ class AgendaSectionHeaderView: UIView {
         return label
     }()
     
-    init(date: Date) {
-        super.init(frame: .zero)
-        
+    override init(reuseIdentifier: String?) {
+        super.init(reuseIdentifier: reuseIdentifier)
+    
         addSubview(stackView)
         NSLayoutConstraint.addEdgeInsetsConstraints(outerLayoutGuide: safeAreaLayoutGuide, innerView: stackView)
         
         stackView.addArrangedSubview(label)
-        
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        label.text = nil
+    }
+    
+    func load(date: Date) {
+        let dateString = date.string(dateFormat: "EEEE, d MMMM")
+        label.text = dateString
     }
 }
