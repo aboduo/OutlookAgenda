@@ -16,7 +16,7 @@ class ContainerViewController: UIViewController {
     lazy private var calendarViewController: CalendarViewController? = {
         guard let calendarDataSource = calendarDataSource else { return nil }
         
-        let viewController = CalendarViewController(calendarDataSource: calendarDataSource)
+        let viewController = CalendarViewController(calendarDataSource: calendarDataSource, previousWeeksCount: Constants.previousWeeksCount)
         viewController.delegate = self
         viewController.view.translatesAutoresizingMaskIntoConstraints = false
         return viewController

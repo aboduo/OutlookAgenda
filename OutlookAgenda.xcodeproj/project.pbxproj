@@ -24,6 +24,7 @@
 		04973A3820D4F04D008DDA36 /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04973A3720D4F04D008DDA36 /* UIColor+Extensions.swift */; };
 		04B7698620D94AA700049525 /* CalendarCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B7698520D94AA700049525 /* CalendarCalculator.swift */; };
 		04B7698820D94D9200049525 /* DatePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B7698720D94D9200049525 /* DatePresenter.swift */; };
+		04BBF8C120DBEA99008D1E4F /* CalendarCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BBF8C020DBEA99008D1E4F /* CalendarCollectionViewLayout.swift */; };
 		04DDA7D320D20F7D00913CB2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04DDA7D220D20F7D00913CB2 /* AppDelegate.swift */; };
 		04DDA7D520D20F7D00913CB2 /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04DDA7D420D20F7D00913CB2 /* ContainerViewController.swift */; };
 		04DDA7E820D20F7F00913CB2 /* OutlookAgendaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04DDA7E720D20F7F00913CB2 /* OutlookAgendaTests.swift */; };
@@ -65,6 +66,7 @@
 		04973A3720D4F04D008DDA36 /* UIColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
 		04B7698520D94AA700049525 /* CalendarCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCalculator.swift; sourceTree = "<group>"; };
 		04B7698720D94D9200049525 /* DatePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePresenter.swift; sourceTree = "<group>"; };
+		04BBF8C020DBEA99008D1E4F /* CalendarCollectionViewLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCollectionViewLayout.swift; sourceTree = "<group>"; };
 		04DDA7CF20D20F7D00913CB2 /* OutlookAgenda.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OutlookAgenda.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		04DDA7D220D20F7D00913CB2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		04DDA7D420D20F7D00913CB2 /* ContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
@@ -119,6 +121,7 @@
 			isa = PBXGroup;
 			children = (
 				0429680520DA903100586E7B /* CalendarCollectionViewCell.swift */,
+				04BBF8C020DBEA99008D1E4F /* CalendarCollectionViewLayout.swift */,
 				0429680720DA903100586E7B /* CalendarDataSource.swift */,
 				0429680620DA903100586E7B /* CalendarHeaderView.swift */,
 				0429680820DA903100586E7B /* CalendarViewController.swift */,
@@ -351,6 +354,7 @@
 				0429680D20DA903100586E7B /* CalendarHeaderView.swift in Sources */,
 				04973A3820D4F04D008DDA36 /* UIColor+Extensions.swift in Sources */,
 				04973A3520D4F02A008DDA36 /* UIViewController+Extensions.swift in Sources */,
+				04BBF8C120DBEA99008D1E4F /* CalendarCollectionViewLayout.swift in Sources */,
 				0429681320DA919400586E7B /* AgendaDataSource.swift in Sources */,
 				04973A3620D4F02A008DDA36 /* NSLayoutConstraint+Extensions.swift in Sources */,
 				0429680A20DA903100586E7B /* AgendaTableSectionHeaderView.swift in Sources */,
