@@ -118,6 +118,16 @@ extension CalendarViewController {
             print("\(notification)")
         }
     }
+    
+    private func scrollToNearestRow(_ scrollView: UIScrollView) {
+        let offsetY = scrollView.contentOffset.y
+        guard offsetY > 0, offsetY < ( scrollView.contentSize.height - scrollView.bounds.size.height ) else {
+            return
+        }
+        let nearestRow = round( offsetY / Constants.calendarRowHeight )
+        let offset = CGPoint(x: 0, y: nearestRow * Constants.calendarRowHeight)
+        scrollView.setContentOffset(offset, animated: true)
+    }
 }
 
 extension CalendarViewController: UICollectionViewDataSource {
@@ -127,7 +137,7 @@ extension CalendarViewController: UICollectionViewDataSource {
     
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        print("collectionView indexPath = \(indexPath)")
+//        print("collectionView indexPath = \(indexPath)")
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CalendarCollectionViewCell.calendarCellIdentifier, for: indexPath) as! CalendarCollectionViewCell
         if let date = dataSource.date(at: indexPath.item) {
@@ -144,12 +154,20 @@ extension CalendarViewController: UICollectionViewDelegate {
         delegate?.calendarViewControllerBeginDragging(on: self)
     }
     
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        scrollToNearestRow(scrollView)
+    }
+    
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if !decelerate {
+            scrollToNearestRow(scrollView)
+        }
+    }
+    
 //    func scrollViewDidScroll(_ scrollView: UIScrollView) {
 //        guard scrollView == collectionView else {
 //            return
 //        }
-//
-//        tableView.setContentOffset(scrollView.contentOffset, animated: false)
 //    }
 }
 
@@ -165,7 +183,7 @@ extension CalendarViewController: UITableViewDataSource {
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        print("tableView indexPath = \(indexPath)")
+//        print("tableView indexPath = \(indexPath)")
         
         let cell = tableView.dequeueReusableCell(withIdentifier: AgendaTableViewCell.reuseIdentifier, for: indexPath)
         
