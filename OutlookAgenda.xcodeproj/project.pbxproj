@@ -116,8 +116,8 @@
 			isa = PBXGroup;
 			children = (
 				0429680520DA903100586E7B /* CalendarCollectionViewCell.swift */,
-				0429680620DA903100586E7B /* CalendarHeaderView.swift */,
 				0429680720DA903100586E7B /* CalendarDataSource.swift */,
+				0429680620DA903100586E7B /* CalendarHeaderView.swift */,
 				0429680820DA903100586E7B /* CalendarViewController.swift */,
 			);
 			path = Calendar;
@@ -134,11 +134,11 @@
 		04973A3220D4F02A008DDA36 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				04973A3320D4F02A008DDA36 /* UIViewController+Extensions.swift */,
-				04973A3420D4F02A008DDA36 /* NSLayoutConstraint+Extensions.swift */,
-				04973A3720D4F04D008DDA36 /* UIColor+Extensions.swift */,
 				04B7698520D94AA700049525 /* CalendarCalculator.swift */,
 				04B7698720D94D9200049525 /* DatePresenter.swift */,
+				04973A3420D4F02A008DDA36 /* NSLayoutConstraint+Extensions.swift */,
+				04973A3720D4F04D008DDA36 /* UIColor+Extensions.swift */,
+				04973A3320D4F02A008DDA36 /* UIViewController+Extensions.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -170,10 +170,10 @@
 				04DDA7D420D20F7D00913CB2 /* ContainerViewController.swift */,
 				0429680020DA903100586E7B /* Agenda */,
 				0429680420DA903100586E7B /* Calendar */,
-				04973A3220D4F02A008DDA36 /* Utils */,
 				048CF90120D3C28E0094A654 /* Resource */,
-				04DDA7DE20D20F7F00913CB2 /* Info.plist */,
+				04973A3220D4F02A008DDA36 /* Utils */,
 				0429681620DAAE6E00586E7B /* Images.xcassets */,
+				04DDA7DE20D20F7F00913CB2 /* Info.plist */,
 			);
 			path = OutlookAgenda;
 			sourceTree = "<group>";
@@ -181,8 +181,8 @@
 		04DDA7E620D20F7F00913CB2 /* OutlookAgendaTests */ = {
 			isa = PBXGroup;
 			children = (
-				04DDA7E720D20F7F00913CB2 /* OutlookAgendaTests.swift */,
 				04DDA7E920D20F7F00913CB2 /* Info.plist */,
+				04DDA7E720D20F7F00913CB2 /* OutlookAgendaTests.swift */,
 			);
 			path = OutlookAgendaTests;
 			sourceTree = "<group>";
@@ -190,8 +190,8 @@
 		04DDA7F120D20F7F00913CB2 /* OutlookAgendaUITests */ = {
 			isa = PBXGroup;
 			children = (
-				04DDA7F220D20F7F00913CB2 /* OutlookAgendaUITests.swift */,
 				04DDA7F420D20F7F00913CB2 /* Info.plist */,
+				04DDA7F220D20F7F00913CB2 /* OutlookAgendaUITests.swift */,
 			);
 			path = OutlookAgendaUITests;
 			sourceTree = "<group>";
@@ -203,6 +203,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 04DDA7F720D20F7F00913CB2 /* Build configuration list for PBXNativeTarget "OutlookAgenda" */;
 			buildPhases = (
+				045E755220DB5E6F00B6D0A1 /* Verify Alphabetical Files */,
 				04DDA7CB20D20F7D00913CB2 /* Sources */,
 				04DDA7CC20D20F7D00913CB2 /* Frameworks */,
 				04DDA7CD20D20F7D00913CB2 /* Resources */,
@@ -320,6 +321,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		045E755220DB5E6F00B6D0A1 /* Verify Alphabetical Files */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Verify Alphabetical Files";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "./BuildScript/verify-files-alphabetical-order.rb";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		04DDA7CB20D20F7D00913CB2 /* Sources */ = {
