@@ -14,9 +14,9 @@ class AgendaTableSectionHeaderView: UITableViewHeaderFooterView {
         return stackView
     }()
     
-    private lazy var label: UILabel = {
+    private lazy var dateLabel: UILabel = {
         let label = UILabel(frame: .zero)
-        label.accessibilityIdentifier = "label"
+        label.accessibilityIdentifier = "dateLabel"
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 14)
         label.textAlignment = .left
@@ -36,8 +36,8 @@ class AgendaTableSectionHeaderView: UITableViewHeaderFooterView {
         addSubview(stackView)
         NSLayoutConstraint.addEdgeInsetsConstraints(outerLayoutGuide: safeAreaLayoutGuide, innerView: stackView, edgeInsets: UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12))
         
-        label.setContentHuggingPriority(.defaultLow, for: .horizontal)
-        stackView.addArrangedSubview(label)
+        dateLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        stackView.addArrangedSubview(dateLabel)
         stackView.addArrangedSubview(weatherImageView)
     }
     
@@ -47,15 +47,33 @@ class AgendaTableSectionHeaderView: UITableViewHeaderFooterView {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        label.text = nil
+        dateLabel.text = nil
         weatherImageView.image = nil
     }
     
     func load(date: Date) {
-        let dateString = date.string(dateFormat: "EEEE, d MMMM")
-        label.text = dateString
+        dateLabel.textColor = date.isInToday() ? .blue : .lightGray
+        dateLabel.text = date.dateStringForTableSectionHeader()
         
         let weatherImageName = WeatherDataSource.weather(at: date).weatherIco()
         weatherImageView.image = UIImage(named: weatherImageName)
+    }
+}
+
+extension Date {
+    fileprivate func dateStringForTableSectionHeader() -> String {
+        var dateString = string(dateFormat: "EEEE, d MMMM")
+        if isInToday() {
+            dateString = "Today • \(dateString)"
+        } else if isInYesterday() {
+            dateString = "Yesterday • \(dateString)"
+        } else if isInTomorrow() {
+            dateString = "Tomorrow • \(dateString)"
+        }
+        
+        if !isInCurrentYear() {
+            dateString = "\(dateString) \(String( year() ))"
+        }
+        return dateString
     }
 }

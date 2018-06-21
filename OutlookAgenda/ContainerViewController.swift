@@ -7,8 +7,8 @@ class ContainerViewController: UIViewController {
         static let calendarTallHeight: CGFloat = CalendarViewController.Constants.calendarHeadViewHeiht + CalendarViewController.Constants.calendarRowHeight * 5
         
         // define how many weeks supported
-        static let previousWeeksCount: Int = 500
-        static let afterWeeksCount: Int = 500
+        static let previousWeeksCount: Int = 30
+        static let afterWeeksCount: Int = 30
     }
     
     private let calendarDataSource = CalendarDataSource(previousWeeksCount: Constants.previousWeeksCount, afterWeeksCount: Constants.afterWeeksCount)

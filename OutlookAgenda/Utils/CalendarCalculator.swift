@@ -34,6 +34,14 @@ open class CalendarCalculator {
     static func isDateInToday(_ date: Date) -> Bool {
         return calendar.isDateInToday(date)
     }
+    
+    static func isDateInYesterday(_ date: Date) -> Bool {
+        return calendar.isDateInYesterday(date)
+    }
+    
+    static func isDateInTomorrow(_ date: Date) -> Bool {
+        return calendar.isDateInTomorrow(date)
+    }
 }
 
 extension Date {
@@ -55,6 +63,14 @@ extension Date {
     
     public func isInToday() -> Bool {
         return CalendarCalculator.isDateInToday(self)
+    }
+    
+    public func isInYesterday() -> Bool {
+        return CalendarCalculator.isDateInYesterday(self)
+    }
+    
+    public func isInTomorrow() -> Bool {
+        return CalendarCalculator.isDateInTomorrow(self)
     }
     
     public func shortStandaloneMonthSymbol() -> String {
