@@ -102,6 +102,10 @@ extension ContainerViewController: CalendarViewControllerDelegate {
             self.view.layoutIfNeeded()
         }
     }
+    
+    func calendarViewControllerDidSelect(date: Date, at index: Int, on calendarViewController: CalendarViewController) {
+        agendaViewController?.scroll(to: index)
+    }
 }
 
 // MARK: - AgendaViewControllerDelegate

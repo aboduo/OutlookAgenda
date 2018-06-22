@@ -2,6 +2,7 @@ import UIKit
 
 protocol CalendarViewControllerDelegate: class {
     func calendarViewControllerBeginDragging(on calendarViewController: CalendarViewController)
+    func calendarViewControllerDidSelect(date: Date, at index: Int, on calendarViewController: CalendarViewController)
 }
 
 class CalendarViewController: UIViewController {
@@ -160,6 +161,13 @@ extension CalendarViewController: UICollectionViewDelegate {
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if !decelerate {
             scrollToNearestRow(scrollView)
+        }
+    }
+    
+    public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        if let date = dataSource.date(at: indexPath.item) {
+            delegate?.calendarViewControllerDidSelect(date: date, at: indexPath.item, on: self)
         }
     }
     

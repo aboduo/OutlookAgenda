@@ -10,7 +10,7 @@ class AgendaViewController: UIViewController {
     private let calendarDataSource: CalendarDataSource
     private let agendaDataSource: AgendaDataSource
     
-    lazy var tableView: UITableView = {
+    private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .plain)
         tableView.accessibilityIdentifier = "tableView"
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -40,6 +40,12 @@ class AgendaViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         initView()
+    }
+    
+    // MARK: - Public
+    func scroll(to section: Int) {
+        let indexPath = IndexPath(row: 0, section: section)
+        tableView.scrollToRow(at: indexPath, at: .top, animated: true)
     }
 }
 
