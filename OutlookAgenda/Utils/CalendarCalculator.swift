@@ -3,17 +3,13 @@ import Foundation
 open class CalendarCalculator {
     
 //    static var calendar = Calendar(identifier: .gregorian)
-//
-//    static func set(local: Locale) {
-//        calendar.locale = local
-//    }
-//
-//    static func set(timezone: TimeZone) {
-//        calendar.timeZone = timezone
-//    }
-
     static fileprivate var calendar = Calendar.autoupdatingCurrent
     static fileprivate var currentYear = CalendarCalculator.year(of: Date())
+    
+    static func set(local: Locale = .autoupdatingCurrent, timezone: TimeZone = .autoupdatingCurrent) {
+        CalendarCalculator.calendar.locale = local
+        CalendarCalculator.calendar.timeZone = timezone
+    }
     
     static func shortStandaloneMonthSymbols() -> [String] {
         return calendar.shortStandaloneMonthSymbols
