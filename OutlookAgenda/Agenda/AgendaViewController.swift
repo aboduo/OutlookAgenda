@@ -8,7 +8,7 @@ class AgendaViewController: UIViewController {
 
     weak var delegate: AgendaViewControllerDelegate?
     private let calendarDataSource: CalendarDataSource
-    private let agendaDataSource: AgendaDataSource
+    private let eventsDataSource: AgendaEventsDataSource
     
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .plain)
@@ -17,8 +17,7 @@ class AgendaViewController: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
         tableView.showsVerticalScrollIndicator = false
-        
-        tableView.backgroundColor = .brown
+        tableView.sectionHeaderHeight = 26
         
         tableView.register(AgendaTableViewCell.self, forCellReuseIdentifier: AgendaTableViewCell.reuseIdentifier)
         tableView.register(AgendaTableSectionHeaderView.self, forHeaderFooterViewReuseIdentifier: AgendaTableSectionHeaderView.reuseIdentifier)
@@ -27,9 +26,9 @@ class AgendaViewController: UIViewController {
     
     // MARK: - Lifecycle Methods
     
-    init(calendarDataSource: CalendarDataSource, agendaDataSource: AgendaDataSource) {
+    init(calendarDataSource: CalendarDataSource, eventsDataSource: AgendaEventsDataSource) {
         self.calendarDataSource = calendarDataSource
-        self.agendaDataSource = agendaDataSource
+        self.eventsDataSource = eventsDataSource
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -60,7 +59,7 @@ extension AgendaViewController {
     }
     
     private func getEvents(at section: Int) -> [AgendaEvent]? {
-        if let date = calendarDataSource.date(at: section), let events = agendaDataSource.agendaEvents(at: date) {
+        if let date = calendarDataSource.date(at: section), let events = eventsDataSource.agendaEvents(at: date) {
             return events
         }
         return nil
@@ -74,10 +73,7 @@ extension AgendaViewController: UITableViewDataSource {
     }
     
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let events = getEvents(at: section) {
-            return events.count
-        }
-        return 1
+        return getEvents(at: section)?.count ?? 1
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -98,10 +94,6 @@ extension AgendaViewController: UITableViewDataSource {
 extension AgendaViewController: UITableViewDelegate {
     public func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         delegate?.agendaViewControllerBeginDragging(on: self)
-    }
-    
-    public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 24
     }
     
     public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {

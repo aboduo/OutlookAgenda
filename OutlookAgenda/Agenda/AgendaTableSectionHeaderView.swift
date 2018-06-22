@@ -4,6 +4,10 @@ import UIKit
 class AgendaTableSectionHeaderView: UITableViewHeaderFooterView {
     static let reuseIdentifier = "AgendaSectionHeaderViewReuseIndentifier"
     
+    struct Constants {
+        static let edgeInsets = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12)
+    }
+    
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.accessibilityIdentifier = "stackView"
@@ -19,6 +23,7 @@ class AgendaTableSectionHeaderView: UITableViewHeaderFooterView {
         label.accessibilityIdentifier = "dateLabel"
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 14)
+        label.textColor = .darkGray
         label.textAlignment = .left
         return label
     }()
@@ -34,9 +39,10 @@ class AgendaTableSectionHeaderView: UITableViewHeaderFooterView {
         super.init(reuseIdentifier: reuseIdentifier)
     
         addSubview(stackView)
-        NSLayoutConstraint.addEdgeInsetsConstraints(outerLayoutGuide: safeAreaLayoutGuide, innerView: stackView, edgeInsets: UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12))
+        NSLayoutConstraint.addEdgeInsetsConstraints(outerLayoutGuide: safeAreaLayoutGuide, innerView: stackView, edgeInsets: Constants.edgeInsets)
         
-        dateLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        dateLabel.setContentHuggingPriority(.defaultLow - 10, for: .horizontal)
+        dateLabel.setContentCompressionResistancePriority(.defaultHigh - 10, for: .horizontal)
         stackView.addArrangedSubview(dateLabel)
         stackView.addArrangedSubview(weatherImageView)
     }
@@ -62,7 +68,7 @@ class AgendaTableSectionHeaderView: UITableViewHeaderFooterView {
 
 extension Date {
     fileprivate func dateStringForTableSectionHeader() -> String {
-        var dateString = string(dateFormat: "EEEE, d MMMM")
+        var dateString = formatString(dateFormat: "EEEE, d MMMM")
         if isInToday() {
             dateString = "Today • \(dateString)"
         } else if isInYesterday() {

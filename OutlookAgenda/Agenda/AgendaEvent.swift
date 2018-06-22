@@ -1,9 +1,7 @@
 import Foundation
 
 struct Person {
-    var name: String?
     var avatar: String?
-    var email: String?
 }
 
 struct AgendaEvent {

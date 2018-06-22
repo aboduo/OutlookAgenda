@@ -24,7 +24,6 @@ final class CalendarCollectionViewCell: UICollectionViewCell {
         let label = UILabel(frame: .zero)
         label.accessibilityIdentifier = "dayLabel"
         label.translatesAutoresizingMaskIntoConstraints = false
-//        label.font = UIFont.systemFont(ofSize: 17, weight: .regular)
         return label
     }()
     

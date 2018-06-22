@@ -23,7 +23,7 @@ class CalendarViewController: UIViewController {
     }()
 
     lazy var collectionView: UICollectionView = {
-        //FIXME: we need to limit the previousWeeksCount to prevent the CGFloat multiplication overflow
+        // FIXME: we need to limit the previousWeeksCount to prevent the CGFloat multiplication overflow
         let layout = CalendarCollectionViewLayout(initialOffset: CGPoint(x: 0, y: CGFloat(dataSource.previousWeeksCount()) * Constants.calendarRowHeight))
         layout.scrollDirection = .vertical
         layout.sectionInsetReference = .fromSafeArea
@@ -62,10 +62,9 @@ class CalendarViewController: UIViewController {
     }()
     
     // MARK: - Lifecycle Methods
-    // Using `previousWeeksCount` to calculate the initial offset of calendar colletction view
+    
     init(calendarDataSource: CalendarDataSource) {
         self.dataSource = calendarDataSource
-//        self.previousWeeksCount = previousWeeksCount
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -137,8 +136,6 @@ extension CalendarViewController: UICollectionViewDataSource {
     
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-//        print("collectionView indexPath = \(indexPath)")
-        
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CalendarCollectionViewCell.calendarCellIdentifier, for: indexPath) as! CalendarCollectionViewCell
         if let date = dataSource.date(at: indexPath.item) {
             cell.load(date: date)
@@ -200,7 +197,5 @@ extension CalendarViewController: UITableViewDataSource {
 
 extension CalendarViewController: UITableViewDelegate {
 
-    
-    
 }
 

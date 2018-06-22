@@ -4,9 +4,9 @@ import UIKit
 class CalendarDataSource {
     
     struct Constants {
-        // define how many weeks supported
-        static let previousWeeksCount: Int = 30
-        static let afterWeeksCount: Int = 30
+        /// define how many weeks supported
+        static let previousWeeksCount: Int = 1
+        static let afterWeeksCount: Int = 1
     }
     
     private let gregorian: Calendar = {

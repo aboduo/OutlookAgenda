@@ -38,9 +38,25 @@ open class CalendarCalculator {
     static func isDateInTomorrow(_ date: Date) -> Bool {
         return calendar.isDateInTomorrow(date)
     }
+    
+    static func add(hours:Int, to date: Date) -> Date? {
+        return calendar.date(byAdding: .hour, value: hours, to: date)
+    }
+    
+    static func startOfDay(for date: Date) -> Date {
+        return calendar.startOfDay(for: date)
+    }
 }
 
 extension Date {
+    public func startOfDay() -> Date {
+        return CalendarCalculator.startOfDay(for: self)
+    }
+    
+    public func add(hours: Int) -> Date? {
+        return CalendarCalculator.add(hours: hours, to: self)
+    }
+    
     public func day() -> Int {
         return CalendarCalculator.day(of: self)
     }

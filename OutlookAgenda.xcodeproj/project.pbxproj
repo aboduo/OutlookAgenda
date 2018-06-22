@@ -14,7 +14,7 @@
 		0429680D20DA903100586E7B /* CalendarHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0429680620DA903100586E7B /* CalendarHeaderView.swift */; };
 		0429680E20DA903100586E7B /* CalendarDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0429680720DA903100586E7B /* CalendarDataSource.swift */; };
 		0429680F20DA903100586E7B /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0429680820DA903100586E7B /* CalendarViewController.swift */; };
-		0429681320DA919400586E7B /* AgendaDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0429681220DA919400586E7B /* AgendaDataSource.swift */; };
+		0429681320DA919400586E7B /* AgendaEventsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0429681220DA919400586E7B /* AgendaEventsDataSource.swift */; };
 		0429681520DA982500586E7B /* AgendaEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0429681420DA982500586E7B /* AgendaEvent.swift */; };
 		0429681720DAAE6E00586E7B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0429681620DAAE6E00586E7B /* Images.xcassets */; };
 		045E756520DB938800B6D0A1 /* WeatherDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045E756420DB938800B6D0A1 /* WeatherDataSource.swift */; };
@@ -56,7 +56,7 @@
 		0429680620DA903100586E7B /* CalendarHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarHeaderView.swift; sourceTree = "<group>"; };
 		0429680720DA903100586E7B /* CalendarDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarDataSource.swift; sourceTree = "<group>"; };
 		0429680820DA903100586E7B /* CalendarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
-		0429681220DA919400586E7B /* AgendaDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgendaDataSource.swift; sourceTree = "<group>"; };
+		0429681220DA919400586E7B /* AgendaEventsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgendaEventsDataSource.swift; sourceTree = "<group>"; };
 		0429681420DA982500586E7B /* AgendaEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgendaEvent.swift; sourceTree = "<group>"; };
 		0429681620DAAE6E00586E7B /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		045E756420DB938800B6D0A1 /* WeatherDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherDataSource.swift; sourceTree = "<group>"; };
@@ -107,8 +107,8 @@
 		0429680020DA903100586E7B /* Agenda */ = {
 			isa = PBXGroup;
 			children = (
-				0429681220DA919400586E7B /* AgendaDataSource.swift */,
 				0429681420DA982500586E7B /* AgendaEvent.swift */,
+				0429681220DA919400586E7B /* AgendaEventsDataSource.swift */,
 				0429680220DA903100586E7B /* AgendaTableSectionHeaderView.swift */,
 				0429680320DA903100586E7B /* AgendaTableViewCell.swift */,
 				0429680120DA903100586E7B /* AgendaViewController.swift */,
@@ -355,7 +355,7 @@
 				04973A3820D4F04D008DDA36 /* UIColor+Extensions.swift in Sources */,
 				04973A3520D4F02A008DDA36 /* UIViewController+Extensions.swift in Sources */,
 				04BBF8C120DBEA99008D1E4F /* CalendarCollectionViewLayout.swift in Sources */,
-				0429681320DA919400586E7B /* AgendaDataSource.swift in Sources */,
+				0429681320DA919400586E7B /* AgendaEventsDataSource.swift in Sources */,
 				04973A3620D4F02A008DDA36 /* NSLayoutConstraint+Extensions.swift in Sources */,
 				0429680A20DA903100586E7B /* AgendaTableSectionHeaderView.swift in Sources */,
 				0429680920DA903100586E7B /* AgendaViewController.swift in Sources */,

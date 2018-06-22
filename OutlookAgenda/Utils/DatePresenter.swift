@@ -12,7 +12,7 @@ open class DatePresenter {
         DatePresenter.dateFormatter.timeZone = timezone
     }
     
-    static func string(from date: Date, dateFormat: String? = nil) -> String {
+    static func formatString(from date: Date, dateFormat: String? = nil) -> String {
         if dateFormat != nil {
             dateFormatter.dateFormat = dateFormat
         }
@@ -21,8 +21,8 @@ open class DatePresenter {
 }
 
 extension Date {
-    public func string(dateFormat: String) -> String {
-        return DatePresenter.string(from: self, dateFormat: dateFormat)
+    public func formatString(dateFormat: String? = nil) -> String {
+        return DatePresenter.formatString(from: self, dateFormat: dateFormat)
     }
     
 
