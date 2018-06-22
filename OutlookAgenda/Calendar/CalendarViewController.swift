@@ -13,7 +13,6 @@ class CalendarViewController: UIViewController {
     
     weak var delegate: CalendarViewControllerDelegate?
     private let dataSource: CalendarDataSource
-    private let previousWeeksCount: Int
     
     lazy private var headerView: CalendarHeaderView = {
         let headerView = CalendarHeaderView.init(frame: .zero)
@@ -24,7 +23,7 @@ class CalendarViewController: UIViewController {
 
     lazy var collectionView: UICollectionView = {
         //FIXME: we need to limit the previousWeeksCount to prevent the CGFloat multiplication overflow
-        let layout = CalendarCollectionViewLayout(initialOffset: CGPoint(x: 0, y: CGFloat(previousWeeksCount) * Constants.calendarRowHeight))
+        let layout = CalendarCollectionViewLayout(initialOffset: CGPoint(x: 0, y: CGFloat(dataSource.previousWeeksCount()) * Constants.calendarRowHeight))
         layout.scrollDirection = .vertical
         layout.sectionInsetReference = .fromSafeArea
         layout.itemSize = CGSize(width: UIScreen.main.bounds.size.width / 7, height: Constants.calendarRowHeight)
@@ -63,9 +62,9 @@ class CalendarViewController: UIViewController {
     
     // MARK: - Lifecycle Methods
     // Using `previousWeeksCount` to calculate the initial offset of calendar colletction view
-    init(calendarDataSource: CalendarDataSource, previousWeeksCount: Int) {
+    init(calendarDataSource: CalendarDataSource) {
         self.dataSource = calendarDataSource
-        self.previousWeeksCount = previousWeeksCount
+//        self.previousWeeksCount = previousWeeksCount
         super.init(nibName: nil, bundle: nil)
     }
     

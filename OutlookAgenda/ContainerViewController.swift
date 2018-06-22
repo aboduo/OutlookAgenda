@@ -5,18 +5,14 @@ class ContainerViewController: UIViewController {
     struct Constants {
         static let calendarShortHeight: CGFloat = CalendarViewController.Constants.calendarHeadViewHeiht + CalendarViewController.Constants.calendarRowHeight * 2
         static let calendarTallHeight: CGFloat = CalendarViewController.Constants.calendarHeadViewHeiht + CalendarViewController.Constants.calendarRowHeight * 5
-        
-        // define how many weeks supported
-        static let previousWeeksCount: Int = 30
-        static let afterWeeksCount: Int = 30
     }
     
-    private let calendarDataSource = CalendarDataSource(previousWeeksCount: Constants.previousWeeksCount, afterWeeksCount: Constants.afterWeeksCount)
+    private let calendarDataSource = CalendarDataSource()
     
     lazy private var calendarViewController: CalendarViewController? = {
         guard let calendarDataSource = calendarDataSource else { return nil }
         
-        let viewController = CalendarViewController(calendarDataSource: calendarDataSource, previousWeeksCount: Constants.previousWeeksCount)
+        let viewController = CalendarViewController(calendarDataSource: calendarDataSource)
         viewController.delegate = self
         viewController.view.translatesAutoresizingMaskIntoConstraints = false
         return viewController
