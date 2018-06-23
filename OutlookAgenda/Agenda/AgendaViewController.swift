@@ -1,7 +1,8 @@
 import UIKit
 
 protocol AgendaViewControllerDelegate: class {
-    func agendaViewControllerBeginDragging(on agendaViewController: AgendaViewController)
+    func agendaViewControllerBeginDragging(_ agendaViewController: AgendaViewController)
+    func agendaViewController(_ agendaViewController: AgendaViewController, scrollTo date: Date, at dateOrder: Int)
 }
 
 class AgendaViewController: UIViewController {
@@ -13,6 +14,7 @@ class AgendaViewController: UIViewController {
     weak var delegate: AgendaViewControllerDelegate?
     private let calendarDataSource: CalendarDataSource
     private let eventsDataSource: AgendaEventsDataSource
+    private var isInitializeComplete = false
     
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .plain)
@@ -45,10 +47,28 @@ class AgendaViewController: UIViewController {
         initView()
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        // calculate the initial offset of tableview is not acurrate in `viewDidLoad()` and `viewDidLayoutSubviews()`,
+        // even call `view.layoutIfNeeded()` to enforce layout
+        // so move the code to here, and using `isInitializeComplete` to make sure excute one time
+        // If you know the reason, please tell me: szs121@163.com, thanks
+        if !isInitializeComplete {
+            let headerRect = tableView.rectForHeader(inSection: calendarDataSource.todayOrder)
+            tableView.setContentOffset(headerRect.origin, animated: false)
+            isInitializeComplete = true
+        }
+    }
+    
     // MARK: - Public
-    func scrollTableView(to section: Int, animated: Bool = false) {
-        let indexPath = IndexPath(row: 0, section: section)
-        tableView.scrollToRow(at: indexPath, at: .top, animated: true)
+    func scrollTableView(to dateOrder: Int, animated: Bool = false) {
+        let indexPath = IndexPath(row: 0, section: dateOrder)
+        tableView.scrollToRow(at: indexPath, at: .top, animated: animated)
     }
 }
 
@@ -60,8 +80,6 @@ extension AgendaViewController {
         
         view.addSubview(tableView)
         NSLayoutConstraint.addEdgeInsetsConstraints(outerLayoutGuide: view, innerView: tableView, edgeInsets: .zero)
-        
-        scrollTableView(to: calendarDataSource.todayIndex, animated: false)
     }
     
     private func getEvents(at section: Int) -> [AgendaEvent]? {
@@ -99,6 +117,17 @@ extension AgendaViewController: UITableViewDataSource {
 
 extension AgendaViewController: UITableViewDelegate {
     
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        guard let tableView = scrollView as? UITableView else { return }
+        guard isInitializeComplete else { return }
+        
+        var offset = tableView.contentOffset
+        offset.y += Constants.tableViewHeaderHeight
+        if let currentIndexPath = tableView.indexPathForRow(at: offset), let date = calendarDataSource.date(at: currentIndexPath.section) {
+            delegate?.agendaViewController(self, scrollTo: date, at: currentIndexPath.section)
+        }
+    }
+    
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         guard let tableView = scrollView as? UITableView else { return }
         
@@ -113,7 +142,7 @@ extension AgendaViewController: UITableViewDelegate {
     }
     
     public func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        delegate?.agendaViewControllerBeginDragging(on: self)
+        delegate?.agendaViewControllerBeginDragging(self)
     }
     
     public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -134,7 +163,7 @@ extension UIScrollView {
 }
 
 extension UITableView {
-    /// just calculate vertical
+    /// just calculate vertical orientation
     fileprivate func alignedContentOffset(for originalContentOffset: CGPoint) -> CGPoint {
         /// just take care of section header,
         /// and if the row will disappear almost(only 10 px outside) then scroll to next

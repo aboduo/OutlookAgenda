@@ -28,10 +28,12 @@ class ContainerViewController: UIViewController {
     }()
     
     lazy var agendaViewControllerTopConstraint: NSLayoutConstraint? = nil
+    lazy var calendarViewControllerHeightConstraint: NSLayoutConstraint? = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
         initView()
+        registerNotification()
     }
 }
 
@@ -60,7 +62,9 @@ extension ContainerViewController {
         calendarVC.view.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor).isActive = true
         calendarVC.view.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor).isActive = true
         calendarVC.view.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor).isActive =  true
-        calendarVC.view.heightAnchor.constraint(equalToConstant: Constants.calendarTallHeight).isActive = true
+
+        calendarViewControllerHeightConstraint = calendarVC.view.heightAnchor.constraint(equalToConstant: Constants.calendarShortHeight)
+        calendarViewControllerHeightConstraint?.isActive = true
         
         addChildViewController(agendaVC, to: view)
         agendaViewControllerTopConstraint = agendaVC.view.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: Constants.calendarShortHeight)
@@ -73,6 +77,12 @@ extension ContainerViewController {
     // TODO: low priority, complete if have time
     private func showErrorView() {
         
+    }
+    
+    private func registerNotification() {
+        NotificationCenter.default.addObserver(forName: .NSCalendarDayChanged, object: self, queue: .main) { notification in
+            print("\(notification)")
+        }
     }
 }
 
@@ -90,10 +100,12 @@ extension ContainerViewController: CalendarViewControllerDelegate {
             agendaViewControllerTopConstraint.constant = Constants.calendarTallHeight
             self.view.layoutIfNeeded()
         }
+        
+        calendarViewControllerHeightConstraint?.constant = Constants.calendarTallHeight + CalendarViewController.Constants.collectionViewEdgeInset.bottom
     }
     
-    func calendarViewController(_ calendarViewController: CalendarViewController, didSelect date: Date, at index: Int) {
-        agendaViewController?.scrollTableView(to: index, animated: true)
+    func calendarViewController(_ calendarViewController: CalendarViewController, didSelect date: Date, at dateOrder: Int) {
+        agendaViewController?.scrollTableView(to: dateOrder, animated: true)
     }
 }
 
@@ -101,22 +113,21 @@ extension ContainerViewController: CalendarViewControllerDelegate {
 
 extension ContainerViewController: AgendaViewControllerDelegate {
     
-    func agendaViewControllerBeginDragging(on agendaViewController: AgendaViewController) {
+    func agendaViewControllerBeginDragging(_ agendaViewController: AgendaViewController) {
         guard let agendaViewControllerTopConstraint = agendaViewControllerTopConstraint, Int(agendaViewControllerTopConstraint.constant) != Int(Constants.calendarShortHeight) else {
             return
         }
-        
+
         view.layoutIfNeeded()
         UIView.animate(withDuration: 0.15) {
             agendaViewControllerTopConstraint.constant = Constants.calendarShortHeight
             self.view.layoutIfNeeded()
         }
+        
+        calendarViewControllerHeightConstraint?.constant = Constants.calendarTallHeight
+    }
+    
+    func agendaViewController(_ agendaViewController: AgendaViewController, scrollTo date: Date, at dateOrder: Int) {
+        calendarViewController?.select(date: date, at: dateOrder)
     }
 }
-
-extension ContainerViewController: UIGestureRecognizerDelegate {
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        return true
-    }
-}
-

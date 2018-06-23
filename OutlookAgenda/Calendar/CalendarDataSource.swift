@@ -4,15 +4,15 @@ import UIKit
 class CalendarDataSource {
     
     struct Constants {
-        /// define how many weeks supported
-        static let previousWeeksCount: Int = 3
-        static let afterWeeksCount: Int = 10
+        // define how many weeks supported
+        static let previousWeeksCount: Int = 100
+        static let afterWeeksCount: Int = 100
     }
 
     private let startDate: Date
     private let endDate: Date
-    let allDaysCount: Int
-    let todayIndex: Int
+    let allDaysCount: Int   // the total count of all day
+    let todayOrder: Int     // the order numbuer from startDate, startDate is 0
     
     init?(calendar: Calendar) {
 
@@ -20,7 +20,7 @@ class CalendarDataSource {
         let today = Date().startOfDay()
         let weekday = today.weekday()
         let todayIndexInCurrentWeek = ( weekday - calendar.firstWeekday + 7 ) % 7
-        todayIndex = Constants.previousWeeksCount * 7 + todayIndexInCurrentWeek
+        todayOrder = Constants.previousWeeksCount * 7 + todayIndexInCurrentWeek
         let previousDaysCount = Constants.previousWeeksCount * 7 + todayIndexInCurrentWeek
         let firstDate = today.add(days: -previousDaysCount)
         guard let tempFirstDate = firstDate else {
@@ -35,8 +35,8 @@ class CalendarDataSource {
         endDate = tempLastDate
     }
     
-    func date(at index: Int) -> Date? {
-        return startDate.add(days: index)
+    func date(at dateOrder: Int) -> Date? {
+        return startDate.add(days: dateOrder)
     }
     
     func previousWeeksCount() -> Int {

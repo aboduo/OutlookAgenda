@@ -2,7 +2,7 @@ import UIKit
 
 protocol CalendarViewControllerDelegate: class {
     func calendarViewControllerBeginDragging(_ calendarViewController: CalendarViewController)
-    func calendarViewController(_ calendarViewController: CalendarViewController, didSelect date: Date, at index: Int)
+    func calendarViewController(_ calendarViewController: CalendarViewController, didSelect date: Date, at dateOrder: Int)
 }
 
 class CalendarViewController: UIViewController {
@@ -10,15 +10,18 @@ class CalendarViewController: UIViewController {
     struct Constants {
         static let calendarHeadViewHeiht: CGFloat = 30
         static let calendarRowHeight: CGFloat = 48
+        static let collectionViewEdgeInset = UIEdgeInsets(top: 0, left: 0, bottom: calendarRowHeight * 3, right: 0)
     }
     
     weak var delegate: CalendarViewControllerDelegate?
     private let dataSource: CalendarDataSource
+    lazy private var currentSelectedDateOrder = dataSource.todayOrder
     
     lazy private var headerView: CalendarHeaderView = {
         let headerView = CalendarHeaderView.init(frame: .zero)
         headerView.accessibilityIdentifier = "headerView"
         headerView.translatesAutoresizingMaskIntoConstraints = false
+        headerView.backgroundColor = .white
         return headerView
     }()
 
@@ -38,6 +41,7 @@ class CalendarViewController: UIViewController {
         collectionView.scrollsToTop = false
         collectionView.showsVerticalScrollIndicator = false
         collectionView.backgroundColor = .white
+        collectionView.contentInset = Constants.collectionViewEdgeInset
 
         collectionView.register(CalendarCollectionViewCell.self, forCellWithReuseIdentifier: CalendarCollectionViewCell.calendarCellIdentifier)
         return collectionView
@@ -55,12 +59,6 @@ class CalendarViewController: UIViewController {
 //        return tableView
 //    }()
     
-    private let formatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
-        return formatter
-    }()
-    
     // MARK: - Lifecycle Methods
     
     init(calendarDataSource: CalendarDataSource) {
@@ -75,13 +73,6 @@ class CalendarViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         initView()
-        registerNotification()
-        
-        // At this point, the constraints do not act, so change the contentOffset of collectionView is not active.
-        // There are some workarounds, I think this is easier one.
-//        DispatchQueue.main.async {
-//            self.collectionView.scrollToItem(at: IndexPath(item: 1000, section: 0), at: .top, animated: false)
-//        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -91,31 +82,31 @@ class CalendarViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
     }
+    
+    // MARK: - public
 
+    func select(date: Date, at dateOrder: Int) {
+        let indexPath = IndexPath(item: dateOrder, section: 0)
+        if let selectedIteams = collectionView.indexPathsForSelectedItems, selectedIteams.contains(indexPath) {
+            /// do nothing
+        } else {
+            collectionView.selectItem(at: indexPath, animated: true, scrollPosition: .top)
+            collectionView.scrollToItem(at: indexPath, at: .top, animated: true)
+        }
+        currentSelectedDateOrder = dateOrder
+    }
 }
 
 extension CalendarViewController {
     
     private func initView() {
         view.addSubview(headerView)
-        headerView.backgroundColor = .white
         NSLayoutConstraint.addEdgeInsetsConstraints(outerLayoutGuide: view, innerView: headerView, edgeInsets: .zero, rectEdge: [.top, .left, .right])
         headerView.heightAnchor.constraint(equalToConstant: Constants.calendarHeadViewHeiht).isActive = true
 
         view.addSubview(collectionView)
         collectionView.topAnchor.constraint(equalTo: headerView.bottomAnchor).isActive = true
         NSLayoutConstraint.addEdgeInsetsConstraints(outerLayoutGuide: view, innerView: collectionView, edgeInsets: .zero, rectEdge: [.left, .bottom, .right])
-        
-//        view.addSubview(tableView)
-//        tableView.backgroundColor = .brown
-//        NSLayoutConstraint.addEdgeInsetsConstraints(outerLayoutGuide: view, innerView: tableView, edgeInsets: UIEdgeInsets(top: 0, left: 200, bottom: 0, right: 0))
-        
-    }
-    
-    private func registerNotification() {
-        NotificationCenter.default.addObserver(forName: .NSCalendarDayChanged, object: self, queue: .main) { notification in
-            print("\(notification)")
-        }
     }
     
     private func scrollToNearestRow(_ scrollView: UIScrollView) {
@@ -140,10 +131,8 @@ extension CalendarViewController: UICollectionViewDataSource {
         if let date = dataSource.date(at: indexPath.item) {
             cell.load(date: date)
         }
-        
         return cell
     }
-
 }
 
 extension CalendarViewController: UICollectionViewDelegate {
@@ -163,16 +152,15 @@ extension CalendarViewController: UICollectionViewDelegate {
     
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
+        print("collectionView didSelectItemAt indexPath = \(indexPath)")
         if let date = dataSource.date(at: indexPath.item) {
             delegate?.calendarViewController(self, didSelect: date, at: indexPath.item)
         }
     }
     
-//    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//        guard scrollView == collectionView else {
-//            return
-//        }
-//    }
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        cell.isSelected = (currentSelectedDateOrder == indexPath.item)
+    }
 }
 
 extension CalendarViewController: UITableViewDataSource {
@@ -186,8 +174,6 @@ extension CalendarViewController: UITableViewDataSource {
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-//        print("tableView indexPath = \(indexPath)")
         
         let cell = tableView.dequeueReusableCell(withIdentifier: AgendaTableViewCell.reuseIdentifier, for: indexPath)
         
