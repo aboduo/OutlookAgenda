@@ -7,7 +7,7 @@ class ContainerViewController: UIViewController {
         static let calendarTallHeight: CGFloat = CalendarViewController.Constants.calendarHeadViewHeiht + CalendarViewController.Constants.calendarRowHeight * 5
     }
     
-    private let calendarDataSource = CalendarDataSource()
+    private let calendarDataSource = CalendarDataSource(calendar: CalendarCalculator.calendar)
     
     lazy private var calendarViewController: CalendarViewController? = {
         guard let calendarDataSource = calendarDataSource else { return nil }

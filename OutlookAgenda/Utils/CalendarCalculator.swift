@@ -3,7 +3,7 @@ import Foundation
 open class CalendarCalculator {
     
 //    static var calendar = Calendar(identifier: .gregorian)
-    static fileprivate var calendar = Calendar.autoupdatingCurrent
+    static var calendar = Calendar.autoupdatingCurrent
     static fileprivate var currentYear = CalendarCalculator.year(of: Date())
     
     static func set(local: Locale = .autoupdatingCurrent, timezone: TimeZone = .autoupdatingCurrent) {
@@ -27,6 +27,10 @@ open class CalendarCalculator {
         return calendar.component(.month, from: date)
     }
     
+    static func weekday(of date: Date) -> Int {
+        return calendar.component(.weekday, from: date)
+    }
+    
     static func isDateInToday(_ date: Date) -> Bool {
         return calendar.isDateInToday(date)
     }
@@ -43,6 +47,10 @@ open class CalendarCalculator {
         return calendar.date(byAdding: .hour, value: hours, to: date)
     }
     
+    static func add(days: Int, to date: Date) -> Date? {
+        return calendar.date(byAdding: .day, value: days, to: date)
+    }
+    
     static func startOfDay(for date: Date) -> Date {
         return calendar.startOfDay(for: date)
     }
@@ -55,6 +63,14 @@ extension Date {
     
     public func add(hours: Int) -> Date? {
         return CalendarCalculator.add(hours: hours, to: self)
+    }
+    
+    public func add(days: Int) -> Date? {
+        return CalendarCalculator.add(days: days, to: self)
+    }
+    
+    public func weekday() -> Int {
+        return CalendarCalculator.weekday(of: self)
     }
     
     public func day() -> Int {
