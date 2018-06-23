@@ -102,20 +102,14 @@ extension AgendaViewController: UITableViewDelegate {
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         guard let tableView = scrollView as? UITableView else { return }
         
-        var targetOffset = targetContentOffset.pointee
+        let targetOffset = targetContentOffset.pointee
         /// make sure offset is in the right range
         guard targetOffset.y >= 0, targetOffset.y <= scrollView.maxContentOffset().y else {
             return
         }
-        /// take care of section header, and if the row will disappear almost then scroll to next
-        targetOffset.y += ( Constants.tableViewHeaderHeight + 10 )
-        let indexPath = tableView.indexPathForRow(at: targetOffset)
-        
-        if let indexPath = indexPath {
-            let rowRect = tableView.rectForRow(at: indexPath)
-            let wantedTargetOffsetY = rowRect.origin.y - Constants.tableViewHeaderHeight
-            targetContentOffset.pointee.y = wantedTargetOffsetY
-        }
+
+        let alignedOffset = tableView.alignedContentOffset(for: targetOffset)
+        targetContentOffset.pointee = alignedOffset
     }
     
     public func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
@@ -136,5 +130,23 @@ extension UIScrollView {
     /// do not take care insets for easier
     fileprivate func maxContentOffset() -> CGPoint {
         return CGPoint(x: contentSize.width - bounds.size.width, y: contentSize.height - bounds.size.height)
+    }
+}
+
+extension UITableView {
+    /// just calculate vertical
+    fileprivate func alignedContentOffset(for originalContentOffset: CGPoint) -> CGPoint {
+        /// just take care of section header,
+        /// and if the row will disappear almost(only 10 px outside) then scroll to next
+        var adjustOffset = originalContentOffset
+        adjustOffset.y += (sectionHeaderHeight + 10 )
+        let indexPath = indexPathForRow(at: adjustOffset)
+        
+        if let indexPath = indexPath {
+            let rowRect = rectForRow(at: indexPath)
+            let alignedContentOffsetY = rowRect.origin.y - sectionHeaderHeight
+            return CGPoint(x: originalContentOffset.x, y: alignedContentOffsetY)
+        }
+        return originalContentOffset
     }
 }
