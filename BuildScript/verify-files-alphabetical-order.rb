@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 SCHEMES = [
-  'OutlookAgenda',
+  'OutlookAgenda/Agenda',
+  'OutlookAgenda/Calendar',
+  'OutlookAgenda/Utiles',
   'OutlookAgendaTests',
   'OutlookAgendaUITests'
 ].freeze
