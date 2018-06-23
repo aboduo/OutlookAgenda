@@ -35,6 +35,13 @@ class ContainerViewController: UIViewController {
         initView()
         registerNotification()
     }
+    
+    func onTapTabBar(gesture: UIGestureRecognizer) {
+        if let calendarDataSource = calendarDataSource {
+            calendarViewController?.select(date: Date(), at: calendarDataSource.todayOrder)
+            agendaViewController?.scrollTableView(to: calendarDataSource.todayOrder, animated: true)
+        }
+    }
 }
 
 

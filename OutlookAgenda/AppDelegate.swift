@@ -4,6 +4,7 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    private let containerViewController = ContainerViewController()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         window =  UIWindow(frame: UIScreen.main.bounds)
@@ -18,21 +19,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 extension AppDelegate {
     private func createRootViewContoller() -> UIViewController {
-        let containerViewController = ContainerViewController()
         containerViewController.tabBarItem = UITabBarItem.init(tabBarSystemItem: .contacts, tag: 1000)
         let navigationController = UINavigationController.init(rootViewController: containerViewController)
         let tabBarViewController = UITabBarController.init()
         tabBarViewController.viewControllers = [navigationController]
         
         /// action on double tap TabBar
-        let doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(onDoubleTapTabBar(_:)))
-        doubleTapGesture.numberOfTapsRequired = 2
+        let doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(onTapTabBar(_:)))
+        doubleTapGesture.numberOfTapsRequired = 1
         tabBarViewController.tabBar.addGestureRecognizer(doubleTapGesture)
         
         return tabBarViewController
     }
     
-    @objc private func onDoubleTapTabBar(_ sender: UIGestureRecognizer) {
+    @objc private func onTapTabBar(_ sender: UIGestureRecognizer) {
         /// using x position of tap to detect which tab bar item is tapped
+        containerViewController.onTapTabBar(gesture: sender)
     }
 }
