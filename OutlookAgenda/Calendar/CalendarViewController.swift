@@ -1,8 +1,8 @@
 import UIKit
 
 protocol CalendarViewControllerDelegate: class {
-    func calendarViewControllerBeginDragging(on calendarViewController: CalendarViewController)
-    func calendarViewControllerDidSelect(date: Date, at index: Int, on calendarViewController: CalendarViewController)
+    func calendarViewControllerBeginDragging(_ calendarViewController: CalendarViewController)
+    func calendarViewController(_ calendarViewController: CalendarViewController, didSelect date: Date, at index: Int)
 }
 
 class CalendarViewController: UIViewController {
@@ -148,7 +148,7 @@ extension CalendarViewController: UICollectionViewDataSource {
 
 extension CalendarViewController: UICollectionViewDelegate {
     public func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        delegate?.calendarViewControllerBeginDragging(on: self)
+        delegate?.calendarViewControllerBeginDragging(self)
     }
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
@@ -164,7 +164,7 @@ extension CalendarViewController: UICollectionViewDelegate {
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         if let date = dataSource.date(at: indexPath.item) {
-            delegate?.calendarViewControllerDidSelect(date: date, at: indexPath.item, on: self)
+            delegate?.calendarViewController(self, didSelect: date, at: indexPath.item)
         }
     }
     

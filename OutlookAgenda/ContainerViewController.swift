@@ -80,7 +80,7 @@ extension ContainerViewController {
 
 extension ContainerViewController: CalendarViewControllerDelegate {
     
-    func calendarViewControllerBeginDragging(on calendarViewController: CalendarViewController) {
+    func calendarViewControllerBeginDragging(_ calendarViewController: CalendarViewController) {
         guard let agendaViewControllerTopConstraint = agendaViewControllerTopConstraint, Int(agendaViewControllerTopConstraint.constant) != Int(Constants.calendarTallHeight) else {
             return
         }
@@ -92,7 +92,7 @@ extension ContainerViewController: CalendarViewControllerDelegate {
         }
     }
     
-    func calendarViewControllerDidSelect(date: Date, at index: Int, on calendarViewController: CalendarViewController) {
+    func calendarViewController(_ calendarViewController: CalendarViewController, didSelect date: Date, at index: Int) {
         agendaViewController?.scrollTableView(to: index, animated: true)
     }
 }
