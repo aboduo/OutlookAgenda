@@ -5,6 +5,10 @@ protocol AgendaViewControllerDelegate: class {
 }
 
 class AgendaViewController: UIViewController {
+    
+    struct Constants {
+        static let tableViewHeaderHeight: CGFloat = 26
+    }
 
     weak var delegate: AgendaViewControllerDelegate?
     private let calendarDataSource: CalendarDataSource
@@ -17,7 +21,7 @@ class AgendaViewController: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
         tableView.showsVerticalScrollIndicator = false
-        tableView.sectionHeaderHeight = 26
+        tableView.sectionHeaderHeight = Constants.tableViewHeaderHeight
         
         tableView.register(AgendaTableViewCell.self, forCellReuseIdentifier: AgendaTableViewCell.reuseIdentifier)
         tableView.register(AgendaTableSectionHeaderView.self, forHeaderFooterViewReuseIdentifier: AgendaTableSectionHeaderView.reuseIdentifier)
@@ -92,6 +96,26 @@ extension AgendaViewController: UITableViewDataSource {
 }
 
 extension AgendaViewController: UITableViewDelegate {
+    
+    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        guard let tableView = scrollView as? UITableView else { return }
+        
+        var targetOffset = targetContentOffset.pointee
+        /// make sure offset is in the right range
+        guard targetOffset.y >= 0, targetOffset.y <= scrollView.maxContentOffset().y else {
+            return
+        }
+        /// take care of section header, and if the row will disappear almost then scroll to next
+        targetOffset.y += ( Constants.tableViewHeaderHeight + 10 )
+        let indexPath = tableView.indexPathForRow(at: targetOffset)
+        
+        if let indexPath = indexPath {
+            let rowRect = tableView.rectForRow(at: indexPath)
+            let wantedTargetOffsetY = rowRect.origin.y - Constants.tableViewHeaderHeight
+            targetContentOffset.pointee.y = wantedTargetOffsetY
+        }
+    }
+    
     public func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         delegate?.agendaViewControllerBeginDragging(on: self)
     }
@@ -103,5 +127,12 @@ extension AgendaViewController: UITableViewDelegate {
             agendaSectionHeaderView.load(date: date)
         }
         return headerView
+    }
+}
+
+extension UIScrollView {
+    /// do not take care insets for easier
+    fileprivate func maxContentOffset() -> CGPoint {
+        return CGPoint(x: contentSize.width - bounds.size.width, y: contentSize.height - bounds.size.height)
     }
 }

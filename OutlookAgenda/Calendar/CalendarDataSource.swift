@@ -5,8 +5,8 @@ class CalendarDataSource {
     
     struct Constants {
         /// define how many weeks supported
-        static let previousWeeksCount: Int = 1
-        static let afterWeeksCount: Int = 1
+        static let previousWeeksCount: Int = 3
+        static let afterWeeksCount: Int = 10
     }
     
     private let gregorian: Calendar = {
