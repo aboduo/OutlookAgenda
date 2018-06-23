@@ -16,6 +16,8 @@ class AgendaTableViewCell: UITableViewCell {
         stackView.alignment = .leading
         stackView.distribution = .fill
         stackView.spacing = 4
+        
+        stackView.widthAnchor.constraint(equalToConstant: 70).isActive = true
         return stackView
     }()
     
@@ -153,25 +155,30 @@ class AgendaTableViewCell: UITableViewCell {
         
         if let startDate = event.dateInterval?.start {
             startDateLabel.text = startDate.formatString(dateFormat: "h:mm a")
+            timeStackView.addArrangedSubview(startDateLabel)
         }
         if let timeInterval = event.dateInterval?.duration {
             durationLabel.text = timeInterval.format(using: [.hour, .minute])
+            timeStackView.addArrangedSubview(durationLabel)
         }
-        timeStackView.addArrangedSubview(startDateLabel)
-        timeStackView.addArrangedSubview(durationLabel)
         
-        titleLabel.text = event.title
-        event.participant?.forEach { event in
-            let avatarImageView = UIImageView(image: UIImage(named: event.avatar ?? "avatar_default"))
-            avatarsStackView.addArrangedSubview(avatarImageView)
-        }
-        locationLabel.text = event.location
-        locationStackView.addArrangedSubview(locationImageView)
-        locationStackView.addArrangedSubview(locationLabel)
-        
+        titleLabel.text = event.title ?? NSLocalizedString("Untitled", comment: "")
         contentStackView.addArrangedSubview(titleLabel)
-        contentStackView.addArrangedSubview(avatarsStackView)
-        contentStackView.addArrangedSubview(locationStackView)
+        
+        if let participants = event.participants, participants.count > 0 {
+            event.participants?.forEach { event in
+                let avatarImageView = UIImageView(image: UIImage(named: event.avatar ?? "avatar_default"))
+                avatarsStackView.addArrangedSubview(avatarImageView)
+            }
+            contentStackView.addArrangedSubview(avatarsStackView)
+        }
+
+        if let location = event.location, !location.isEmpty {
+            locationLabel.text = location
+            locationStackView.addArrangedSubview(locationImageView)
+            locationStackView.addArrangedSubview(locationLabel)
+            contentStackView.addArrangedSubview(locationStackView)
+        }
     }
     
     private func showNoEventView() {
