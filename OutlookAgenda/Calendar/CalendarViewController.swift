@@ -15,7 +15,7 @@ class CalendarViewController: UIViewController {
     
     weak var delegate: CalendarViewControllerDelegate?
     private let dataSource: CalendarDataSource
-    lazy private var currentSelectedDateOrder = dataSource.todayOrder
+    lazy private var currentSelectedOrder = dataSource.todayOrder
     
     lazy private var headerView: CalendarHeaderView = {
         let headerView = CalendarHeaderView.init(frame: .zero)
@@ -46,19 +46,7 @@ class CalendarViewController: UIViewController {
         collectionView.register(CalendarCollectionViewCell.self, forCellWithReuseIdentifier: CalendarCollectionViewCell.calendarCellIdentifier)
         return collectionView
     }()
-    
-//    lazy var tableView: UITableView = {
-//        let tableView = UITableView(frame: .zero, style: .plain)
-//        tableView.accessibilityIdentifier = "tableView"
-//        tableView.translatesAutoresizingMaskIntoConstraints = false
-//        tableView.dataSource = self
-//        tableView.delegate = self
-//        tableView.showsVerticalScrollIndicator = false
-//
-//        tableView.register(AgendaTableViewCell.self, forCellReuseIdentifier: AgendaTableViewCell.agendaTableViewCellIdentifier)
-//        return tableView
-//    }()
-    
+
     // MARK: - Lifecycle Methods
     
     init(calendarDataSource: CalendarDataSource) {
@@ -86,14 +74,12 @@ class CalendarViewController: UIViewController {
     // MARK: - public
 
     func select(date: Date, at dateOrder: Int) {
-        let indexPath = IndexPath(item: dateOrder, section: 0)
-        if let selectedIteams = collectionView.indexPathsForSelectedItems, selectedIteams.contains(indexPath) {
-            /// do nothing
-        } else {
-            collectionView.selectItem(at: indexPath, animated: true, scrollPosition: .top)
-            collectionView.scrollToItem(at: indexPath, at: .top, animated: true)
+        guard currentSelectedOrder != dateOrder else { return }
+        
+        updateVisibelCellsSelectedState(for: dateOrder)
+        if !collectionView.isTracking {
+            collectionView.scrollToItem(at: IndexPath(item: dateOrder, section: 0), at: .top, animated: true)
         }
-        currentSelectedDateOrder = dateOrder
     }
 }
 
@@ -109,14 +95,12 @@ extension CalendarViewController {
         NSLayoutConstraint.addEdgeInsetsConstraints(outerLayoutGuide: view, innerView: collectionView, edgeInsets: .zero, rectEdge: [.left, .bottom, .right])
     }
     
-    private func scrollToNearestRow(_ scrollView: UIScrollView) {
-        let offsetY = scrollView.contentOffset.y
-        guard offsetY > 0, offsetY < ( scrollView.contentSize.height - scrollView.bounds.size.height ) else {
-            return
+    private func updateVisibelCellsSelectedState(for newSelectedOrder: Int) {
+        let newIndexPath = IndexPath(item: newSelectedOrder, section: 0)
+        collectionView.indexPathsForVisibleItems.forEach() { visibileIndex in
+            collectionView.cellForItem(at: visibileIndex)?.isSelected = (visibileIndex == newIndexPath)
         }
-        let nearestRow = round( offsetY / Constants.calendarRowHeight )
-        let offset = CGPoint(x: 0, y: nearestRow * Constants.calendarRowHeight)
-        scrollView.setContentOffset(offset, animated: true)
+        currentSelectedOrder = newSelectedOrder
     }
 }
 
@@ -136,52 +120,52 @@ extension CalendarViewController: UICollectionViewDataSource {
 }
 
 extension CalendarViewController: UICollectionViewDelegate {
-    public func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         delegate?.calendarViewControllerBeginDragging(self)
     }
     
-    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        scrollToNearestRow(scrollView)
+    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        guard collectionView == scrollView else { return }
+
+        let offsetY = targetContentOffset.pointee.y
+        guard offsetY > scrollView.contentInset.top, offsetY < (scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom) else {
+            return
+        }
+        let nearestRow = round( offsetY / Constants.calendarRowHeight )
+        let alignedOffset = CGPoint(x: 0, y: nearestRow * Constants.calendarRowHeight)
+        targetContentOffset.pointee = alignedOffset
     }
     
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        if !decelerate {
-            scrollToNearestRow(scrollView)
-        }
+        updateVisibelCellsSelectedState(for: currentSelectedOrder)
     }
     
-    public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
-        print("collectionView didSelectItemAt indexPath = \(indexPath)")
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        updateVisibelCellsSelectedState(for: indexPath.item)
         if let date = dataSource.date(at: indexPath.item) {
             delegate?.calendarViewController(self, didSelect: date, at: indexPath.item)
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        cell.isSelected = (currentSelectedDateOrder == indexPath.item)
+        cell.isSelected = (currentSelectedOrder == indexPath.item)
     }
 }
 
 extension CalendarViewController: UITableViewDataSource {
     
-    public func numberOfSections(in tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
-    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 200
     }
     
-    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: AgendaTableViewCell.reuseIdentifier, for: indexPath)
         
         return cell
     }
 }
-
-extension CalendarViewController: UITableViewDelegate {
-
-}
-

@@ -15,6 +15,8 @@ class AgendaViewController: UIViewController {
     private let calendarDataSource: CalendarDataSource
     private let eventsDataSource: AgendaEventsDataSource
     private var isInitializeComplete = false
+    private lazy var currentSelectedOrder = calendarDataSource.todayOrder
+    private var shouldUpdateSelectedOrderAndNoticeDelegate = true
     
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .plain)
@@ -59,16 +61,19 @@ class AgendaViewController: UIViewController {
         // so move the code to here, and using `isInitializeComplete` to make sure excute one time
         // If you know the reason, please tell me: szs121@163.com, thanks
         if !isInitializeComplete {
-            let headerRect = tableView.rectForHeader(inSection: calendarDataSource.todayOrder)
-            tableView.setContentOffset(headerRect.origin, animated: false)
+            scrollTableView(to: calendarDataSource.todayOrder, animated: false)
             isInitializeComplete = true
         }
     }
     
     // MARK: - Public
     func scrollTableView(to dateOrder: Int, animated: Bool = false) {
-        let indexPath = IndexPath(row: 0, section: dateOrder)
-        tableView.scrollToRow(at: indexPath, at: .top, animated: animated)
+        shouldUpdateSelectedOrderAndNoticeDelegate = false
+
+        let headerRect = tableView.rectForHeader(inSection: dateOrder)
+        let newOffset = max(0, min(tableView.contentSize.height - tableView.bounds.size.height, headerRect.origin.y))
+        tableView.setContentOffset(CGPoint(x: 0, y: newOffset), animated: animated)
+        currentSelectedOrder = dateOrder
     }
 }
 
@@ -92,15 +97,15 @@ extension AgendaViewController {
 
 extension AgendaViewController: UITableViewDataSource {
     
-    public func numberOfSections(in tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return calendarDataSource.allDaysCount
     }
     
-    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return getEvents(at: section)?.count ?? 1
     }
     
-    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: AgendaTableViewCell.reuseIdentifier, for: indexPath)
         guard let agendaCell = cell as? AgendaTableViewCell  else {
             return cell
@@ -123,8 +128,13 @@ extension AgendaViewController: UITableViewDelegate {
         
         var offset = tableView.contentOffset
         offset.y += Constants.tableViewHeaderHeight
-        if let currentIndexPath = tableView.indexPathForRow(at: offset), let date = calendarDataSource.date(at: currentIndexPath.section) {
-            delegate?.agendaViewController(self, scrollTo: date, at: currentIndexPath.section)
+        if let newIndexPath = tableView.indexPathForRow(at: offset),
+            newIndexPath.section != currentSelectedOrder,
+            shouldUpdateSelectedOrderAndNoticeDelegate,
+            let date = calendarDataSource.date(at: newIndexPath.section) {
+            
+            currentSelectedOrder = newIndexPath.section
+            delegate?.agendaViewController(self, scrollTo: date, at: currentSelectedOrder)
         }
     }
     
@@ -141,11 +151,12 @@ extension AgendaViewController: UITableViewDelegate {
         targetContentOffset.pointee = alignedOffset
     }
     
-    public func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        shouldUpdateSelectedOrderAndNoticeDelegate = true
         delegate?.agendaViewControllerBeginDragging(self)
     }
     
-    public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: AgendaTableSectionHeaderView.reuseIdentifier)
         if let agendaSectionHeaderView = headerView as? AgendaTableSectionHeaderView {
             let date = calendarDataSource.date(at: section) ?? Date()
