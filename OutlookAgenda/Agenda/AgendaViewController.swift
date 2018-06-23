@@ -46,7 +46,7 @@ class AgendaViewController: UIViewController {
     }
     
     // MARK: - Public
-    func scroll(to section: Int) {
+    func scrollTableView(to section: Int, animated: Bool = false) {
         let indexPath = IndexPath(row: 0, section: section)
         tableView.scrollToRow(at: indexPath, at: .top, animated: true)
     }
@@ -60,6 +60,8 @@ extension AgendaViewController {
         
         view.addSubview(tableView)
         NSLayoutConstraint.addEdgeInsetsConstraints(outerLayoutGuide: view, innerView: tableView, edgeInsets: .zero)
+        
+        scrollTableView(to: calendarDataSource.todayIndex, animated: false)
     }
     
     private func getEvents(at section: Int) -> [AgendaEvent]? {

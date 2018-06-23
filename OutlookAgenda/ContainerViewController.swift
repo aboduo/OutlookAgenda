@@ -93,7 +93,7 @@ extension ContainerViewController: CalendarViewControllerDelegate {
     }
     
     func calendarViewControllerDidSelect(date: Date, at index: Int, on calendarViewController: CalendarViewController) {
-        agendaViewController?.scroll(to: index)
+        agendaViewController?.scrollTableView(to: index, animated: true)
     }
 }
 

@@ -12,13 +12,16 @@ class CalendarDataSource {
     private let startDate: Date
     private let endDate: Date
     let allDaysCount: Int
+    let todayIndex: Int
     
     init?(calendar: Calendar) {
 
         allDaysCount = ( Constants.previousWeeksCount + 1 + Constants.afterWeeksCount ) * 7
         let today = Date().startOfDay()
         let weekday = today.weekday()
-        let previousDaysCount = Constants.previousWeeksCount * 7 + ( weekday - calendar.firstWeekday + 7 ) % 7
+        let todayIndexInCurrentWeek = ( weekday - calendar.firstWeekday + 7 ) % 7
+        todayIndex = Constants.previousWeeksCount * 7 + todayIndexInCurrentWeek
+        let previousDaysCount = Constants.previousWeeksCount * 7 + todayIndexInCurrentWeek
         let firstDate = today.add(days: -previousDaysCount)
         guard let tempFirstDate = firstDate else {
             return nil
