@@ -12,7 +12,7 @@ class AgendaViewController: UIViewController {
     }
 
     weak var delegate: AgendaViewControllerDelegate?
-    private let calendarDataSource: CalendarDataSource
+    private let calendarDataSource: CalendarDataSourceProtocal
     private let eventsDataSource: AgendaEventsDataSource
     private var isInitializeComplete = false
     private lazy var currentSelectedOrder = calendarDataSource.todayOrder
@@ -34,7 +34,7 @@ class AgendaViewController: UIViewController {
     
     // MARK: - Lifecycle Methods
     
-    init(calendarDataSource: CalendarDataSource, eventsDataSource: AgendaEventsDataSource) {
+    init(calendarDataSource: CalendarDataSourceProtocal, eventsDataSource: AgendaEventsDataSource) {
         self.calendarDataSource = calendarDataSource
         self.eventsDataSource = eventsDataSource
         super.init(nibName: nil, bundle: nil)

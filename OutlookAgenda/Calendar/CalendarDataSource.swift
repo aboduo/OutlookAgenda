@@ -1,18 +1,18 @@
 import Foundation
 import UIKit
 
-class CalendarDataSource {
+class CalendarDataSource: CalendarDataSourceProtocal {
     
     struct Constants {
         // define how many weeks supported
-        static let previousWeeksCount: Int = 100
-        static let afterWeeksCount: Int = 100
+        static let previousWeeksCount: Int = 10
+        static let afterWeeksCount: Int = 20
     }
 
     private let startDate: Date
     private let endDate: Date
-    let allDaysCount: Int   // the total count of all day
-    let todayOrder: Int     // the order numbuer from startDate, startDate is 0
+    let allDaysCount: Int
+    let todayOrder: Int
     
     init?(calendar: Calendar) {
 
@@ -37,9 +37,5 @@ class CalendarDataSource {
     
     func date(at dateOrder: Int) -> Date? {
         return startDate.add(days: dateOrder)
-    }
-    
-    func previousWeeksCount() -> Int {
-        return Constants.previousWeeksCount
     }
 }

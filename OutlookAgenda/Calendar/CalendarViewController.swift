@@ -14,7 +14,7 @@ class CalendarViewController: UIViewController {
     }
     
     weak var delegate: CalendarViewControllerDelegate?
-    private let calendarDataSource: CalendarDataSource
+    private let calendarDataSource: CalendarDataSourceProtocal
     private lazy var currentSelectedOrder = calendarDataSource.todayOrder
     private lazy var monthLabelItems: [String: (monthLabel: UIView, offsetY: CGFloat, centerYConstraint: NSLayoutConstraint)] = [:]
     
@@ -27,8 +27,8 @@ class CalendarViewController: UIViewController {
     }()
 
     lazy private var collectionView: UICollectionView = {
-        // FIXME: we need to limit the previousWeeksCount to prevent the CGFloat multiplication overflow
-        let layout = CalendarCollectionViewLayout(initialOffset: CGPoint(x: 0, y: CGFloat(calendarDataSource.previousWeeksCount()) * Constants.calendarRowHeight))
+        let previousWeeksCount = calendarDataSource.todayOrder / 7
+        let layout = CalendarCollectionViewLayout(initialOffset: CGPoint(x: 0, y: previousWeeksCount * Int(Constants.calendarRowHeight)))
         layout.scrollDirection = .vertical
         layout.sectionInsetReference = .fromSafeArea
         layout.itemSize = CGSize(width: UIScreen.main.bounds.size.width / 7, height: Constants.calendarRowHeight)
@@ -41,6 +41,7 @@ class CalendarViewController: UIViewController {
         collectionView.delegate = self
         collectionView.scrollsToTop = false
         collectionView.showsVerticalScrollIndicator = false
+        collectionView.alwaysBounceVertical = true
         collectionView.backgroundColor = .white
         collectionView.contentInset = Constants.collectionViewEdgeInset
 
@@ -61,7 +62,7 @@ class CalendarViewController: UIViewController {
     
     // MARK: - Lifecycle Methods
     
-    init(calendarDataSource: CalendarDataSource) {
+    init(calendarDataSource: CalendarDataSourceProtocal) {
         self.calendarDataSource = calendarDataSource
         super.init(nibName: nil, bundle: nil)
     }
