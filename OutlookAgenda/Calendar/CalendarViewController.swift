@@ -14,8 +14,8 @@ class CalendarViewController: UIViewController {
     }
     
     weak var delegate: CalendarViewControllerDelegate?
-    private let dataSource: CalendarDataSource
-    lazy private var currentSelectedOrder = dataSource.todayOrder
+    private let calendarDataSource: CalendarDataSource
+    lazy private var currentSelectedOrder = calendarDataSource.todayOrder
     
     lazy private var headerView: CalendarHeaderView = {
         let headerView = CalendarHeaderView.init(frame: .zero)
@@ -27,7 +27,7 @@ class CalendarViewController: UIViewController {
 
     lazy var collectionView: UICollectionView = {
         // FIXME: we need to limit the previousWeeksCount to prevent the CGFloat multiplication overflow
-        let layout = CalendarCollectionViewLayout(initialOffset: CGPoint(x: 0, y: CGFloat(dataSource.previousWeeksCount()) * Constants.calendarRowHeight))
+        let layout = CalendarCollectionViewLayout(initialOffset: CGPoint(x: 0, y: CGFloat(calendarDataSource.previousWeeksCount()) * Constants.calendarRowHeight))
         layout.scrollDirection = .vertical
         layout.sectionInsetReference = .fromSafeArea
         layout.itemSize = CGSize(width: UIScreen.main.bounds.size.width / 7, height: Constants.calendarRowHeight)
@@ -50,7 +50,7 @@ class CalendarViewController: UIViewController {
     // MARK: - Lifecycle Methods
     
     init(calendarDataSource: CalendarDataSource) {
-        self.dataSource = calendarDataSource
+        self.calendarDataSource = calendarDataSource
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -106,13 +106,13 @@ extension CalendarViewController {
 
 extension CalendarViewController: UICollectionViewDataSource {
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return dataSource.allDaysCount
+        return calendarDataSource.allDaysCount
     }
     
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CalendarCollectionViewCell.calendarCellIdentifier, for: indexPath) as! CalendarCollectionViewCell
-        if let date = dataSource.date(at: indexPath.item) {
+        if let date = calendarDataSource.date(at: indexPath.item) {
             cell.load(date: date)
         }
         return cell
@@ -142,7 +142,7 @@ extension CalendarViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         updateVisibelCellsSelectedState(for: indexPath.item)
-        if let date = dataSource.date(at: indexPath.item) {
+        if let date = calendarDataSource.date(at: indexPath.item) {
             delegate?.calendarViewController(self, didSelect: date, at: indexPath.item)
         }
     }
