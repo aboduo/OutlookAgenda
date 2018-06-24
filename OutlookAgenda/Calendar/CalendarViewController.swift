@@ -15,7 +15,8 @@ class CalendarViewController: UIViewController {
     
     weak var delegate: CalendarViewControllerDelegate?
     private let calendarDataSource: CalendarDataSource
-    lazy private var currentSelectedOrder = calendarDataSource.todayOrder
+    private lazy var currentSelectedOrder = calendarDataSource.todayOrder
+    private lazy var monthLabelItems: [String: (monthLabel: UIView, offsetY: CGFloat, centerYConstraint: NSLayoutConstraint)] = [:]
     
     lazy private var headerView: CalendarHeaderView = {
         let headerView = CalendarHeaderView.init(frame: .zero)
@@ -25,7 +26,7 @@ class CalendarViewController: UIViewController {
         return headerView
     }()
 
-    lazy var collectionView: UICollectionView = {
+    lazy private var collectionView: UICollectionView = {
         // FIXME: we need to limit the previousWeeksCount to prevent the CGFloat multiplication overflow
         let layout = CalendarCollectionViewLayout(initialOffset: CGPoint(x: 0, y: CGFloat(calendarDataSource.previousWeeksCount()) * Constants.calendarRowHeight))
         layout.scrollDirection = .vertical
@@ -47,6 +48,17 @@ class CalendarViewController: UIViewController {
         return collectionView
     }()
 
+    lazy private var overlayView: UIView = {
+        let view = UIView(frame: .zero)
+        view.accessibilityIdentifier = "overLayView"
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.isUserInteractionEnabled = false
+        view.clipsToBounds = true
+        view.backgroundColor = UIColor.white.withAlphaComponent(0)
+
+        return view
+    }()
+    
     // MARK: - Lifecycle Methods
     
     init(calendarDataSource: CalendarDataSource) {
@@ -93,6 +105,9 @@ extension CalendarViewController {
         view.addSubview(collectionView)
         collectionView.topAnchor.constraint(equalTo: headerView.bottomAnchor).isActive = true
         NSLayoutConstraint.addEdgeInsetsConstraints(outerLayoutGuide: view, innerView: collectionView, edgeInsets: .zero, rectEdge: [.left, .bottom, .right])
+        
+        view.addSubview(overlayView)
+        NSLayoutConstraint.addEdgeInsetsConstraints(outerLayoutGuide: view, innerView: overlayView, edgeInsets: UIEdgeInsets(top: Constants.calendarHeadViewHeiht, left: 0, bottom: 0, right: 0))
     }
     
     private func updateVisibelCellsSelectedState(for newSelectedOrder: Int) {
@@ -101,6 +116,37 @@ extension CalendarViewController {
             collectionView.cellForItem(at: visibileIndex)?.isSelected = (visibileIndex == newIndexPath)
         }
         currentSelectedOrder = newSelectedOrder
+    }
+    
+    private func showOverlayView() {
+        overlayView.isHidden = false
+        UIView.animate(withDuration: 0.25) {
+            self.overlayView.backgroundColor = UIColor.white.withAlphaComponent(0.9)
+            self.overlayView.subviews.forEach { view in
+                if let monthLabel = view as? UILabel {
+                    monthLabel.textColor = .black
+                }
+            }
+        }
+    }
+    
+    private func hideOverlayView() {
+        UIView.animate(withDuration: 0.25, animations: {
+            self.overlayView.backgroundColor = UIColor.white.withAlphaComponent(0)
+            self.overlayView.subviews.forEach { view in
+                if let monthLabel = view as? UILabel {
+                    monthLabel.textColor = UIColor.black.withAlphaComponent(0)
+                }
+            }
+        })
+    }
+    
+    private func createMonthLabel(monthString: String) -> UILabel {
+        let label = UILabel(frame: .zero)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = monthString
+        label.textColor = .black
+        return label
     }
 }
 
@@ -122,6 +168,7 @@ extension CalendarViewController: UICollectionViewDataSource {
 extension CalendarViewController: UICollectionViewDelegate {
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         delegate?.calendarViewControllerBeginDragging(self)
+        showOverlayView()
     }
     
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
@@ -140,6 +187,10 @@ extension CalendarViewController: UICollectionViewDelegate {
         updateVisibelCellsSelectedState(for: currentSelectedOrder)
     }
     
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        hideOverlayView()
+    }
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         updateVisibelCellsSelectedState(for: indexPath.item)
         if let date = calendarDataSource.date(at: indexPath.item) {
@@ -149,23 +200,47 @@ extension CalendarViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         cell.isSelected = (currentSelectedOrder == indexPath.item)
+        
+        if let date = calendarDataSource.date(at: indexPath.item), date.day() == 15 {
+            let monthString = date.monthStringForOverlay()
+            let monthLabel = createMonthLabel(monthString: monthString)
+            if let alpha = overlayView.backgroundColor?.cgColor.alpha {
+                monthLabel.textColor = UIColor.black.withAlphaComponent(alpha)
+            }
+            overlayView.addSubview(monthLabel)
+            
+            let cellCenterInOverlay = collectionView.convert(cell.center, to: overlayView)
+            monthLabel.centerXAnchor.constraint(equalTo: overlayView.centerXAnchor).isActive = true
+            let centerYConstraint = monthLabel.centerYAnchor.constraint(equalTo: overlayView.topAnchor, constant: cellCenterInOverlay.y)
+            centerYConstraint.isActive = true
+            monthLabelItems[monthString] = (monthLabel, cell.center.y, centerYConstraint)
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if let date = calendarDataSource.date(at: indexPath.item), date.day() == 15 {
+            let monthString = date.monthStringForOverlay()
+            if let (monthLabel, _, _) = monthLabelItems[monthString] {
+                monthLabel.removeFromSuperview()
+            }
+            monthLabelItems.removeValue(forKey: monthString)
+        }
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if let alpha = overlayView.backgroundColor?.cgColor.alpha, alpha > 0 {
+            monthLabelItems.forEach { _, value in
+                let currentOffsetY = overlayView.convert(CGPoint.zero, to: collectionView).y
+                let (_, offsetY, centerYConstraint) = value
+                centerYConstraint.constant = offsetY - currentOffsetY
+            }
+        }
     }
 }
 
-extension CalendarViewController: UITableViewDataSource {
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 200
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        let cell = tableView.dequeueReusableCell(withIdentifier: AgendaTableViewCell.reuseIdentifier, for: indexPath)
-        
-        return cell
+extension Date {
+    fileprivate func monthStringForOverlay() -> String {
+        let dateFormat = isInCurrentYear() ? "MMMM" : "yyyy MMMM"
+        return formatString(dateFormat: dateFormat)
     }
 }

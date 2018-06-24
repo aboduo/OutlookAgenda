@@ -24,6 +24,4 @@ extension Date {
     public func formatString(dateFormat: String? = nil) -> String {
         return DatePresenter.formatString(from: self, dateFormat: dateFormat)
     }
-    
-
 }
