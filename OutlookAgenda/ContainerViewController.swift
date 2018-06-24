@@ -51,7 +51,9 @@ class ContainerViewController: UIViewController {
 
 extension ContainerViewController {
     private func initView() {
-        self.title = "Title"
+        if let calendarDataSource = calendarDataSource {
+            self.title = calendarDataSource.date(at: calendarDataSource.todayOrder)?.monthStringForOverlay()
+        }
         
         /// remove the bottom line of navigation bar
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .any, barMetrics: .default)
@@ -88,9 +90,10 @@ extension ContainerViewController {
         
     }
     
+    // TODO: response the system calendar changes
     private func registerNotification() {
         NotificationCenter.default.addObserver(forName: .NSCalendarDayChanged, object: self, queue: .main) { notification in
-            print("\(notification)")
+            print("system calendar did change: \(notification)")
         }
     }
 }
@@ -115,6 +118,7 @@ extension ContainerViewController: CalendarViewControllerDelegate {
     
     func calendarViewController(_ calendarViewController: CalendarViewController, didSelect date: Date, at dateOrder: Int) {
         agendaViewController?.scroll(to: dateOrder, animated: true)
+        title = date.monthStringForOverlay()
     }
 }
 
@@ -138,5 +142,6 @@ extension ContainerViewController: AgendaViewControllerDelegate {
     
     func agendaViewController(_ agendaViewController: AgendaViewController, didScrollTo date: Date, at dateOrder: Int) {
         calendarViewController?.select(date: date, at: dateOrder)
+        title = date.monthStringForOverlay()
     }
 }

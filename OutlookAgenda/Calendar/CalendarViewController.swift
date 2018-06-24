@@ -74,20 +74,10 @@ class CalendarViewController: UIViewController {
         super.viewDidLoad()
         initView()
     }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-    }
     
     // MARK: - public
 
     func select(date: Date, at dateOrder: Int) {
-        guard currentSelectedOrder != dateOrder else { return }
-        
         updateVisibelCellsSelectedState(for: dateOrder)
         if !collectionView.isTracking {
             collectionView.scrollToItem(at: IndexPath(item: dateOrder, section: 0), at: .top, animated: true)
@@ -234,12 +224,5 @@ extension CalendarViewController: UICollectionViewDelegate {
                 centerYConstraint.constant = offsetY - currentOffsetY
             }
         }
-    }
-}
-
-extension Date {
-    fileprivate func monthStringForOverlay() -> String {
-        let dateFormat = isInCurrentYear() ? "MMMM" : "yyyy MMMM"
-        return formatString(dateFormat: dateFormat)
     }
 }
