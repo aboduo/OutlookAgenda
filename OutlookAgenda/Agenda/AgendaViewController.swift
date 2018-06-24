@@ -2,7 +2,7 @@ import UIKit
 
 protocol AgendaViewControllerDelegate: class {
     func agendaViewControllerBeginDragging(_ agendaViewController: AgendaViewController)
-    func agendaViewController(_ agendaViewController: AgendaViewController, scrollTo date: Date, at dateOrder: Int)
+    func agendaViewController(_ agendaViewController: AgendaViewController, didScrollTo date: Date, at dateOrder: Int)
 }
 
 class AgendaViewController: UIViewController {
@@ -16,7 +16,7 @@ class AgendaViewController: UIViewController {
     private let eventsDataSource: AgendaEventsDataSource
     private var isInitializeComplete = false
     private lazy var currentSelectedOrder = calendarDataSource.todayOrder
-    private var shouldUpdateSelectedOrderAndNoticeDelegate = true
+    private var shouldUpdateSelectedOrderAndNoticeDelegate = true /// If scroll is caused by CalendarViewController, then prevent cyclic notice CalendarViewController to update
     
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .plain)
@@ -61,13 +61,14 @@ class AgendaViewController: UIViewController {
         // so move the code to here, and using `isInitializeComplete` to make sure excute one time
         // If you know the reason, please tell me: szs121@163.com, thanks
         if !isInitializeComplete {
-            scrollTableView(to: calendarDataSource.todayOrder, animated: false)
+            scroll(to: calendarDataSource.todayOrder, animated: false)
             isInitializeComplete = true
         }
     }
     
     // MARK: - Public
-    func scrollTableView(to dateOrder: Int, animated: Bool = false) {
+    
+    func scroll(to dateOrder: Int, animated: Bool = false) {
         guard dateOrder > 0, dateOrder < calendarDataSource.allDaysCount else { return }
         
         shouldUpdateSelectedOrderAndNoticeDelegate = false
@@ -134,7 +135,7 @@ extension AgendaViewController: UITableViewDelegate {
             let date = calendarDataSource.date(at: newIndexPath.section) {
             
             currentSelectedOrder = newIndexPath.section
-            delegate?.agendaViewController(self, scrollTo: date, at: currentSelectedOrder)
+            delegate?.agendaViewController(self, didScrollTo: date, at: currentSelectedOrder)
         }
     }
     
@@ -143,10 +144,7 @@ extension AgendaViewController: UITableViewDelegate {
         
         let targetOffset = targetContentOffset.pointee
         /// make sure offset is in the right range
-        guard targetOffset.y >= 0, targetOffset.y <= scrollView.maxContentOffset().y else {
-            return
-        }
-
+        guard targetOffset.y >= 0, targetOffset.y <= scrollView.maxContentOffset().y else { return }
         let alignedOffset = tableView.alignedContentOffset(for: targetOffset)
         targetContentOffset.pointee = alignedOffset
     }

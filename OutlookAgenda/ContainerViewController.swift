@@ -36,10 +36,10 @@ class ContainerViewController: UIViewController {
         registerNotification()
     }
     
-    func onTapTabBar(gesture: UIGestureRecognizer) {
+    public func focusOnToday(gesture: UIGestureRecognizer) {
         if let calendarDataSource = calendarDataSource {
             calendarViewController?.select(date: Date(), at: calendarDataSource.todayOrder)
-            agendaViewController?.scrollTableView(to: calendarDataSource.todayOrder, animated: true)
+            agendaViewController?.scroll(to: calendarDataSource.todayOrder, animated: true)
         }
     }
 }
@@ -112,7 +112,7 @@ extension ContainerViewController: CalendarViewControllerDelegate {
     }
     
     func calendarViewController(_ calendarViewController: CalendarViewController, didSelect date: Date, at dateOrder: Int) {
-        agendaViewController?.scrollTableView(to: dateOrder, animated: true)
+        agendaViewController?.scroll(to: dateOrder, animated: true)
     }
 }
 
@@ -134,7 +134,7 @@ extension ContainerViewController: AgendaViewControllerDelegate {
         calendarViewControllerHeightConstraint?.constant = Constants.calendarTallHeight
     }
     
-    func agendaViewController(_ agendaViewController: AgendaViewController, scrollTo date: Date, at dateOrder: Int) {
+    func agendaViewController(_ agendaViewController: AgendaViewController, didScrollTo date: Date, at dateOrder: Int) {
         calendarViewController?.select(date: date, at: dateOrder)
     }
 }

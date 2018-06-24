@@ -24,7 +24,6 @@ extension AppDelegate {
         let tabBarViewController = UITabBarController.init()
         tabBarViewController.viewControllers = [navigationController]
         
-        /// action on double tap TabBar
         let doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(onTapTabBar(_:)))
         doubleTapGesture.numberOfTapsRequired = 1
         tabBarViewController.tabBar.addGestureRecognizer(doubleTapGesture)
@@ -34,6 +33,6 @@ extension AppDelegate {
     
     @objc private func onTapTabBar(_ sender: UIGestureRecognizer) {
         /// using x position of tap to detect which tab bar item is tapped
-        containerViewController.onTapTabBar(gesture: sender)
+        containerViewController.focusOnToday(gesture: sender)
     }
 }
