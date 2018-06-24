@@ -55,8 +55,8 @@ class CalendarViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.isUserInteractionEnabled = false
         view.clipsToBounds = true
-        view.backgroundColor = UIColor.white.withAlphaComponent(0)
-
+        view.backgroundColor = UIColor.white.withAlphaComponent(0.9)
+        view.alpha = 0
         return view
     }()
     
@@ -110,25 +110,14 @@ extension CalendarViewController {
     }
     
     private func showOverlayView() {
-        overlayView.isHidden = false
         UIView.animate(withDuration: 0.25) {
-            self.overlayView.backgroundColor = UIColor.white.withAlphaComponent(0.9)
-            self.overlayView.subviews.forEach { view in
-                if let monthLabel = view as? UILabel {
-                    monthLabel.textColor = .black
-                }
-            }
+            self.overlayView.alpha = 1
         }
     }
     
     private func hideOverlayView() {
         UIView.animate(withDuration: 0.25, animations: {
-            self.overlayView.backgroundColor = UIColor.white.withAlphaComponent(0)
-            self.overlayView.subviews.forEach { view in
-                if let monthLabel = view as? UILabel {
-                    monthLabel.textColor = UIColor.black.withAlphaComponent(0)
-                }
-            }
+            self.overlayView.alpha = 0
         })
     }
     
@@ -191,12 +180,10 @@ extension CalendarViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         cell.isSelected = (currentSelectedOrder == indexPath.item)
         
+        // add month label on overlay, algin with the day 15th
         if let date = calendarDataSource.date(at: indexPath.item), date.day() == 15 {
             let monthString = date.monthStringForOverlay()
             let monthLabel = createMonthLabel(monthString: monthString)
-            if let alpha = overlayView.backgroundColor?.cgColor.alpha {
-                monthLabel.textColor = UIColor.black.withAlphaComponent(alpha)
-            }
             overlayView.addSubview(monthLabel)
             
             let cellCenterInOverlay = collectionView.convert(cell.center, to: overlayView)
@@ -208,6 +195,8 @@ extension CalendarViewController: UICollectionViewDelegate {
     }
     
     func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        
+        // remove month label outside
         if let date = calendarDataSource.date(at: indexPath.item), date.day() == 15 {
             let monthString = date.monthStringForOverlay()
             if let (monthLabel, _, _) = monthLabelItems[monthString] {
