@@ -68,11 +68,11 @@ class AgendaViewController: UIViewController {
     
     // MARK: - Public
     func scrollTableView(to dateOrder: Int, animated: Bool = false) {
+        guard dateOrder > 0, dateOrder < calendarDataSource.allDaysCount else { return }
+        
         shouldUpdateSelectedOrderAndNoticeDelegate = false
-
-        let headerRect = tableView.rectForHeader(inSection: dateOrder)
-        let newOffset = max(0, min(tableView.contentSize.height - tableView.bounds.size.height, headerRect.origin.y))
-        tableView.setContentOffset(CGPoint(x: 0, y: newOffset), animated: animated)
+        let indexPath = IndexPath(row: 0, section: dateOrder)
+        tableView.scrollToRow(at: indexPath, at: .top, animated: animated)
         currentSelectedOrder = dateOrder
     }
 }
