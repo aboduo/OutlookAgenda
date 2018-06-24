@@ -129,7 +129,7 @@ class AgendaTableViewCell: UITableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         [timeStackView, avatarsStackView, locationStackView, contentStackView, mainStackView].forEach { stackView in
-            stackView.arrangedSubviews.forEach{ view in
+            stackView.arrangedSubviews.forEach { view in
                 view.removeFromSuperview()
             }
             stackView.removeFromSuperview()

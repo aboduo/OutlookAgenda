@@ -15,7 +15,6 @@ class AgendaEventsDataSource {
         return [day0.keyForEvents(): [event0, event1, event2]]
     }()
     
-    
     /// Get events of specified day using year month and day as key
     func agendaEvents(at day: Date) -> [AgendaEvent]? {
         return AgendaEventsDataSource.agendaEvents[day.keyForEvents()]

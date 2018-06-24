@@ -43,7 +43,7 @@ open class CalendarCalculator {
         return calendar.isDateInTomorrow(date)
     }
     
-    static func add(hours:Int, to date: Date) -> Date? {
+    static func add(hours: Int, to date: Date) -> Date? {
         return calendar.date(byAdding: .hour, value: hours, to: date)
     }
     

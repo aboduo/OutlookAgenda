@@ -6,8 +6,8 @@
 //  Copyright © 2018 sheng. All rights reserved.
 //
 
-import XCTest
 @testable import OutlookAgenda
+import XCTest
 
 class OutlookAgendaTests: XCTestCase {
     

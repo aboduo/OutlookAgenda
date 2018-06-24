@@ -45,7 +45,6 @@ final class CalendarCollectionViewCell: UICollectionViewCell {
         return stackView
     }()
     
-    
     private let dateFormatter: DateFormatter = {
         var dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MMM"
@@ -78,7 +77,6 @@ final class CalendarCollectionViewCell: UICollectionViewCell {
         fatalError("This subclass does not support NSCoding.")
     }
     
-    
     func load(date: Date) {
         
         if date.isInToday() {
@@ -103,6 +101,6 @@ final class CalendarCollectionViewCell: UICollectionViewCell {
             yearLabel.text = "\(year)"
         } else {
             yearLabel.isHidden = true
-        }   
+        }
     }
 }

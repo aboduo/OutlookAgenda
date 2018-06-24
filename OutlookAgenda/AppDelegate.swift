@@ -7,7 +7,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private let containerViewController = ContainerViewController()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        window =  UIWindow(frame: UIScreen.main.bounds)
+        window = UIWindow(frame: UIScreen.main.bounds)
         if let window = self.window {
             window.rootViewController = createRootViewContoller()
             window.backgroundColor = .white

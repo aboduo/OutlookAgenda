@@ -27,7 +27,7 @@ class CalendarHeaderView: UIView {
         NSLayoutConstraint.addEdgeInsetsConstraints(outerLayoutGuide: self, innerView: stackView, edgeInsets: .zero)
         
         let gregorian = NSCalendar(calendarIdentifier: .gregorian)
-        let _ = gregorian?.veryShortWeekdaySymbols.map { weekDay in
+        _ = gregorian?.veryShortWeekdaySymbols.map { weekDay in
             let label = createWeekLabel()
             label.text = weekDay
             stackView.addArrangedSubview(label)

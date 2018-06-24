@@ -30,6 +30,9 @@ class ContainerViewController: UIViewController {
     lazy var agendaViewControllerTopConstraint: NSLayoutConstraint? = nil
     lazy var calendarViewControllerHeightConstraint: NSLayoutConstraint? = nil
     
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         initView()
@@ -43,7 +46,6 @@ class ContainerViewController: UIViewController {
         }
     }
 }
-
 
 // MARK: - Private
 
@@ -68,7 +70,7 @@ extension ContainerViewController {
         addChildViewController(calendarVC, to: view)
         calendarVC.view.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor).isActive = true
         calendarVC.view.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor).isActive = true
-        calendarVC.view.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor).isActive =  true
+        calendarVC.view.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor).isActive = true
 
         calendarViewControllerHeightConstraint = calendarVC.view.heightAnchor.constraint(equalToConstant: Constants.calendarShortHeight)
         calendarViewControllerHeightConstraint?.isActive = true
@@ -77,7 +79,7 @@ extension ContainerViewController {
         agendaViewControllerTopConstraint = agendaVC.view.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: Constants.calendarShortHeight)
         agendaViewControllerTopConstraint?.isActive = true
         agendaVC.view.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor).isActive = true
-        agendaVC.view.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor).isActive =  true
+        agendaVC.view.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor).isActive = true
         agendaVC.view.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor).isActive = true
     }
     

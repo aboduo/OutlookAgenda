@@ -112,7 +112,7 @@ extension CalendarViewController {
     
     private func updateVisibelCellsSelectedState(for newSelectedOrder: Int) {
         let newIndexPath = IndexPath(item: newSelectedOrder, section: 0)
-        collectionView.indexPathsForVisibleItems.forEach() { visibileIndex in
+        collectionView.indexPathsForVisibleItems.forEach { visibileIndex in
             collectionView.cellForItem(at: visibileIndex)?.isSelected = (visibileIndex == newIndexPath)
         }
         currentSelectedOrder = newSelectedOrder
@@ -156,10 +156,9 @@ extension CalendarViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CalendarCollectionViewCell.calendarCellIdentifier, for: indexPath) as! CalendarCollectionViewCell
-        if let date = calendarDataSource.date(at: indexPath.item) {
-            cell.load(date: date)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CalendarCollectionViewCell.calendarCellIdentifier, for: indexPath)
+        if let calendarCell = cell as? CalendarCollectionViewCell, let date = calendarDataSource.date(at: indexPath.item) {
+            calendarCell.load(date: date)
         }
         return cell
     }
