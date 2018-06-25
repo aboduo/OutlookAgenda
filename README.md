@@ -4,6 +4,7 @@ My answer solution to [iOS Engineer Challenge](https://github.com/outlook/jobs/b
 ## Prerequisite
 - iOS 11, iPhoneX, do not test in other devices
 - swift 4.0, XCode 9.4
+- Need to update Provisioning Profile for running in real iPhone.
 
 
 ## Architecture
@@ -25,6 +26,8 @@ My answer solution to [iOS Engineer Challenge](https://github.com/outlook/jobs/b
  
  
  ## Notice
+ - Add a script to make sure files in subfolders sorted in alphabetical order.
+ - Support swfitlint.
  - Unit test does not cover all cases.
  - Add weather support, just using local data not from network.
  - Some ealier git commits need to squash.
