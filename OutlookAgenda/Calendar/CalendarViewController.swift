@@ -79,9 +79,14 @@ class CalendarViewController: UIViewController {
     // MARK: - public
 
     func select(dateOrder: Int) {
+        guard dateOrder > 0, dateOrder < calendarDataSource.allDaysCount else { return }
+        guard currentSelectedOrder != dateOrder else { return }
+        
+        let isInSomeWeek = ((currentSelectedOrder / 7) == (dateOrder / 7))
+        currentSelectedOrder = dateOrder
         updateVisibelCellsSelectedState(for: dateOrder)
-        if !collectionView.isTracking {
-            collectionView.scrollToItem(at: IndexPath(item: dateOrder, section: 0), at: .top, animated: true)
+        if !collectionView.isTracking && dateOrder >= 7 && !isInSomeWeek {
+            collectionView.scrollToItem(at: IndexPath(item: dateOrder - 7, section: 0), at: .top, animated: true)
         }
     }
 }
@@ -106,7 +111,6 @@ extension CalendarViewController {
         collectionView.indexPathsForVisibleItems.forEach { visibileIndex in
             collectionView.cellForItem(at: visibileIndex)?.isSelected = (visibileIndex == newIndexPath)
         }
-        currentSelectedOrder = newSelectedOrder
     }
     
     private func showOverlayView() {
@@ -162,16 +166,12 @@ extension CalendarViewController: UICollectionViewDelegate {
         targetContentOffset.pointee = alignedOffset
     }
     
-    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        updateVisibelCellsSelectedState(for: currentSelectedOrder)
-    }
-    
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         hideOverlayView()
     }
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        updateVisibelCellsSelectedState(for: indexPath.item)
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {        
+        select(dateOrder: indexPath.item)
         delegate?.calendarViewController(self, didSelect: indexPath.item)
     }
     

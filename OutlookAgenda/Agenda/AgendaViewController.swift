@@ -15,7 +15,6 @@ class AgendaViewController: UIViewController {
     private let calendarDataSource: CalendarDataSourceProtocal
     private let eventsDataSource: AgendaEventsDataSource
     private var isInitializeComplete = false
-    private lazy var currentSelectedOrder = calendarDataSource.todayOrder
     private var shouldUpdateSelectedOrderAndNoticeDelegate = true /// If scroll is caused by CalendarViewController, then prevent notice CalendarViewController to update cyclically
     
     private lazy var tableView: UITableView = {
@@ -70,11 +69,11 @@ class AgendaViewController: UIViewController {
     
     func scroll(to dateOrder: Int, animated: Bool = false) {
         guard dateOrder > 0, dateOrder < calendarDataSource.allDaysCount else { return }
+        guard !tableView.isTracking else { return }
         
         shouldUpdateSelectedOrderAndNoticeDelegate = false
         let indexPath = IndexPath(row: 0, section: dateOrder)
         tableView.scrollToRow(at: indexPath, at: .top, animated: animated)
-        currentSelectedOrder = dateOrder
     }
 }
 
@@ -127,12 +126,10 @@ extension AgendaViewController: UITableViewDelegate {
         guard isInitializeComplete else { return }
         
         let offset = tableView.contentOffset
-        if let newIndexPath = tableView.indexPathForRow(at: offset),
-            newIndexPath.section != currentSelectedOrder,
+        if let indexPath = tableView.indexPathForRow(at: offset),
             shouldUpdateSelectedOrderAndNoticeDelegate {
             
-            currentSelectedOrder = newIndexPath.section
-            delegate?.agendaViewController(self, didScrollTo: currentSelectedOrder)
+            delegate?.agendaViewController(self, didScrollTo: indexPath.section)
         }
     }
     
@@ -150,7 +147,7 @@ extension AgendaViewController: UITableViewDelegate {
         shouldUpdateSelectedOrderAndNoticeDelegate = true
         delegate?.agendaViewControllerBeginDragging(self)
     }
-    
+        
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: AgendaTableSectionHeaderView.reuseIdentifier)
         if let agendaSectionHeaderView = headerView as? AgendaTableSectionHeaderView {

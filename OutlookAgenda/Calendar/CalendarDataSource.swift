@@ -12,7 +12,7 @@ class CalendarDataSource: CalendarDataSourceProtocal {
     private let startDate: Date
     private let endDate: Date
     let allDaysCount: Int
-    let todayOrder: Int
+    let todayOrder: Int // not updated real time, disorder when just pass 00:00 AM
     
     init?(calendar: Calendar) {
 
