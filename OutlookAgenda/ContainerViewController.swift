@@ -1,3 +1,17 @@
+/*
+ ContainerViewController
+ |
+ |-CalendarViewController
+ |      |
+ |      |-CalendarHeaderView
+ |      |
+ |      |-collectionView
+ |      |
+ |      |-overlayView
+ |
+ |-AgendaViewController
+ */
+
 import UIKit
 
 class ContainerViewController: UIViewController {
