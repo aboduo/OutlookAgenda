@@ -32,4 +32,6 @@ My answer solution to [iOS Engineer Challenge](https://github.com/outlook/jobs/b
  - Add weather support, just using local data not from network.
  - Some ealier git commits need to squash.
  - Do not add UI tests as not familiar.
+ - Have not test when system calendar changed.
+ - Have not take care of today changed, as just pass 00:00 AM.
  
