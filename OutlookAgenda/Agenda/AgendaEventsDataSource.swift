@@ -4,6 +4,7 @@ class AgendaEventsDataSource {
     
     static private var agendaEvents: [String: [AgendaEvent]] = {
         let day0 = Date().startOfDay()
+        // enfore unbox some test data
         let dateInterval0 = DateInterval(start: day0.add(hours: 9)!, end: day0.add(hours: 11)!)
         let dateInterval1 = DateInterval(start: day0.add(hours: 13)!, end: day0.add(hours: 15)!)
         let dateInterval2 = DateInterval(start: day0.add(hours: 16)!, end: day0.add(hours: 18)!)
