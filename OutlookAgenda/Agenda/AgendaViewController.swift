@@ -16,7 +16,7 @@ class AgendaViewController: UIViewController {
     private let eventsDataSource: AgendaEventsDataSource
     private var isInitializeComplete = false
     private lazy var currentSelectedOrder = calendarDataSource.todayOrder
-    private var shouldUpdateSelectedOrderAndNoticeDelegate = true /// If scroll is caused by CalendarViewController, then prevent cyclic notice CalendarViewController to update
+    private var shouldUpdateSelectedOrderAndNoticeDelegate = true /// If scroll is caused by CalendarViewController, then prevent notice CalendarViewController to update cyclically
     
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .plain)

@@ -20,6 +20,7 @@
 		042A324C20DFA8910060E9BB /* Date+OutlookAgenda.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042A324B20DFA8910060E9BB /* Date+OutlookAgenda.swift */; };
 		042A324E20DFB5760060E9BB /* CalendarDataSourceProtocal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042A324D20DFB5760060E9BB /* CalendarDataSourceProtocal.swift */; };
 		045E756520DB938800B6D0A1 /* WeatherDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045E756420DB938800B6D0A1 /* WeatherDataSource.swift */; };
+		04722E5220E115B6006D49C7 /* FakeCalendarDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04722E5120E115B6006D49C7 /* FakeCalendarDataSource.swift */; };
 		048CF90620D3C28E0094A654 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 048CF90320D3C28E0094A654 /* LaunchScreen.storyboard */; };
 		04973A3520D4F02A008DDA36 /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04973A3320D4F02A008DDA36 /* UIViewController+Extensions.swift */; };
 		04973A3620D4F02A008DDA36 /* NSLayoutConstraint+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04973A3420D4F02A008DDA36 /* NSLayoutConstraint+Extensions.swift */; };
@@ -64,6 +65,7 @@
 		042A324B20DFA8910060E9BB /* Date+OutlookAgenda.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+OutlookAgenda.swift"; sourceTree = "<group>"; };
 		042A324D20DFB5760060E9BB /* CalendarDataSourceProtocal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarDataSourceProtocal.swift; sourceTree = "<group>"; };
 		045E756420DB938800B6D0A1 /* WeatherDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherDataSource.swift; sourceTree = "<group>"; };
+		04722E5120E115B6006D49C7 /* FakeCalendarDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeCalendarDataSource.swift; sourceTree = "<group>"; };
 		048CF90420D3C28E0094A654 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		04973A3320D4F02A008DDA36 /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
 		04973A3420D4F02A008DDA36 /* NSLayoutConstraint+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSLayoutConstraint+Extensions.swift"; sourceTree = "<group>"; };
@@ -193,6 +195,7 @@
 		04DDA7E620D20F7F00913CB2 /* OutlookAgendaTests */ = {
 			isa = PBXGroup;
 			children = (
+				04722E5120E115B6006D49C7 /* FakeCalendarDataSource.swift */,
 				04DDA7E920D20F7F00913CB2 /* Info.plist */,
 				04DDA7E720D20F7F00913CB2 /* OutlookAgendaTests.swift */,
 			);
@@ -384,6 +387,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				04DDA7E820D20F7F00913CB2 /* OutlookAgendaTests.swift in Sources */,
+				04722E5220E115B6006D49C7 /* FakeCalendarDataSource.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
