@@ -182,8 +182,8 @@
 				04DDA7D420D20F7D00913CB2 /* ContainerViewController.swift */,
 				0429680420DA903100586E7B /* Calendar */,
 				0429680020DA903100586E7B /* Agenda */,
-				048CF90120D3C28E0094A654 /* Resource */,
 				04973A3220D4F02A008DDA36 /* Utils */,
+				048CF90120D3C28E0094A654 /* Resource */,
 				0429681620DAAE6E00586E7B /* Images.xcassets */,
 				04DDA7DE20D20F7F00913CB2 /* Info.plist */,
 			);

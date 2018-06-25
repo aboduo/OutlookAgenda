@@ -83,7 +83,6 @@ class AgendaViewController: UIViewController {
 extension AgendaViewController {
     
     private func initView() {
-        
         view.addSubview(tableView)
         NSLayoutConstraint.addEdgeInsetsConstraints(outerLayoutGuide: view, innerView: tableView, edgeInsets: .zero)
     }
