@@ -2,7 +2,7 @@ import UIKit
 
 protocol CalendarViewControllerDelegate: class {
     func calendarViewControllerBeginDragging(_ calendarViewController: CalendarViewController)
-    func calendarViewController(_ calendarViewController: CalendarViewController, didSelect date: Date, at dateOrder: Int)
+    func calendarViewController(_ calendarViewController: CalendarViewController, didSelect dateOrder: Int)
 }
 
 class CalendarViewController: UIViewController {
@@ -78,7 +78,7 @@ class CalendarViewController: UIViewController {
     
     // MARK: - public
 
-    func select(date: Date, at dateOrder: Int) {
+    func select(dateOrder: Int) {
         updateVisibelCellsSelectedState(for: dateOrder)
         if !collectionView.isTracking {
             collectionView.scrollToItem(at: IndexPath(item: dateOrder, section: 0), at: .top, animated: true)
@@ -172,9 +172,7 @@ extension CalendarViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         updateVisibelCellsSelectedState(for: indexPath.item)
-        if let date = calendarDataSource.date(at: indexPath.item) {
-            delegate?.calendarViewController(self, didSelect: date, at: indexPath.item)
-        }
+        delegate?.calendarViewController(self, didSelect: indexPath.item)
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {

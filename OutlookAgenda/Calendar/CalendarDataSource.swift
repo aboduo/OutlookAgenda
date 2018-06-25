@@ -5,8 +5,8 @@ class CalendarDataSource: CalendarDataSourceProtocal {
     
     struct Constants {
         // define how many weeks supported
-        static let previousWeeksCount: Int = 10
-        static let afterWeeksCount: Int = 20
+        static let previousWeeksCount: Int = 400
+        static let afterWeeksCount: Int = 400
     }
 
     private let startDate: Date

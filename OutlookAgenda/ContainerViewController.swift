@@ -55,7 +55,7 @@ class ContainerViewController: UIViewController {
     
     public func focusOnToday(gesture: UIGestureRecognizer) {
         if let calendarDataSource = calendarDataSource {
-            calendarViewController?.select(date: Date(), at: calendarDataSource.todayOrder)
+            calendarViewController?.select(dateOrder: calendarDataSource.todayOrder)
             agendaViewController?.scroll(to: calendarDataSource.todayOrder, animated: true)
         }
     }
@@ -99,6 +99,12 @@ extension ContainerViewController {
         agendaVC.view.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor).isActive = true
     }
     
+    private func updateTitle(at dateOrder: Int) {
+        if let date = calendarDataSource?.date(at: dateOrder) {
+            title = date.monthStringForOverlay()
+        }
+    }
+    
     // TODO: low priority, complete if have time
     private func showErrorView() {
         
@@ -130,9 +136,9 @@ extension ContainerViewController: CalendarViewControllerDelegate {
         calendarViewControllerHeightConstraint?.constant = Constants.calendarTallHeight + CalendarViewController.Constants.collectionViewEdgeInset.bottom
     }
     
-    func calendarViewController(_ calendarViewController: CalendarViewController, didSelect date: Date, at dateOrder: Int) {
+    func calendarViewController(_ calendarViewController: CalendarViewController, didSelect dateOrder: Int) {
         agendaViewController?.scroll(to: dateOrder, animated: true)
-        title = date.monthStringForOverlay()
+        updateTitle(at: dateOrder)
     }
 }
 
@@ -154,8 +160,8 @@ extension ContainerViewController: AgendaViewControllerDelegate {
         calendarViewControllerHeightConstraint?.constant = Constants.calendarTallHeight
     }
     
-    func agendaViewController(_ agendaViewController: AgendaViewController, didScrollTo date: Date, at dateOrder: Int) {
-        calendarViewController?.select(date: date, at: dateOrder)
-        title = date.monthStringForOverlay()
+    func agendaViewController(_ agendaViewController: AgendaViewController, didScrollTo dateOrder: Int) {
+        calendarViewController?.select(dateOrder: dateOrder)
+        updateTitle(at: dateOrder)
     }
 }

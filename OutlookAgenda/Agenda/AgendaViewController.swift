@@ -2,7 +2,7 @@ import UIKit
 
 protocol AgendaViewControllerDelegate: class {
     func agendaViewControllerBeginDragging(_ agendaViewController: AgendaViewController)
-    func agendaViewController(_ agendaViewController: AgendaViewController, didScrollTo date: Date, at dateOrder: Int)
+    func agendaViewController(_ agendaViewController: AgendaViewController, didScrollTo dateOrder: Int)
 }
 
 class AgendaViewController: UIViewController {
@@ -129,11 +129,10 @@ extension AgendaViewController: UITableViewDelegate {
         let offset = tableView.contentOffset
         if let newIndexPath = tableView.indexPathForRow(at: offset),
             newIndexPath.section != currentSelectedOrder,
-            shouldUpdateSelectedOrderAndNoticeDelegate,
-            let date = calendarDataSource.date(at: newIndexPath.section) {
+            shouldUpdateSelectedOrderAndNoticeDelegate {
             
             currentSelectedOrder = newIndexPath.section
-            delegate?.agendaViewController(self, didScrollTo: date, at: currentSelectedOrder)
+            delegate?.agendaViewController(self, didScrollTo: currentSelectedOrder)
         }
     }
     
