@@ -20,7 +20,6 @@
 		042A324C20DFA8910060E9BB /* Date+OutlookAgenda.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042A324B20DFA8910060E9BB /* Date+OutlookAgenda.swift */; };
 		042A324E20DFB5760060E9BB /* CalendarDataSourceProtocal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042A324D20DFB5760060E9BB /* CalendarDataSourceProtocal.swift */; };
 		045E756520DB938800B6D0A1 /* WeatherDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045E756420DB938800B6D0A1 /* WeatherDataSource.swift */; };
-		04722E5220E115B6006D49C7 /* FakeCalendarDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04722E5120E115B6006D49C7 /* FakeCalendarDataSource.swift */; };
 		048CF90620D3C28E0094A654 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 048CF90320D3C28E0094A654 /* LaunchScreen.storyboard */; };
 		04973A3520D4F02A008DDA36 /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04973A3320D4F02A008DDA36 /* UIViewController+Extensions.swift */; };
 		04973A3620D4F02A008DDA36 /* NSLayoutConstraint+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04973A3420D4F02A008DDA36 /* NSLayoutConstraint+Extensions.swift */; };
@@ -30,8 +29,11 @@
 		04BBF8C120DBEA99008D1E4F /* CalendarCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BBF8C020DBEA99008D1E4F /* CalendarCollectionViewLayout.swift */; };
 		04DDA7D320D20F7D00913CB2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04DDA7D220D20F7D00913CB2 /* AppDelegate.swift */; };
 		04DDA7D520D20F7D00913CB2 /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04DDA7D420D20F7D00913CB2 /* ContainerViewController.swift */; };
-		04DDA7E820D20F7F00913CB2 /* OutlookAgendaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04DDA7E720D20F7F00913CB2 /* OutlookAgendaTests.swift */; };
+		04DDA7E820D20F7F00913CB2 /* AgendaViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04DDA7E720D20F7F00913CB2 /* AgendaViewControllerTests.swift */; };
 		04DDA7F320D20F7F00913CB2 /* OutlookAgendaUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04DDA7F220D20F7F00913CB2 /* OutlookAgendaUITests.swift */; };
+		04F67A1F20E26BAE0016DF6E /* UIViewController+UnitTesting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F67A1B20E26BAE0016DF6E /* UIViewController+UnitTesting.swift */; };
+		04F67A2020E26BAE0016DF6E /* UIView+ViewWithAccessibilityIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F67A1C20E26BAE0016DF6E /* UIView+ViewWithAccessibilityIdentifier.swift */; };
+		04F67A2120E26BAE0016DF6E /* FakeCalendarDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F67A1E20E26BAE0016DF6E /* FakeCalendarDataSource.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,7 +67,6 @@
 		042A324B20DFA8910060E9BB /* Date+OutlookAgenda.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+OutlookAgenda.swift"; sourceTree = "<group>"; };
 		042A324D20DFB5760060E9BB /* CalendarDataSourceProtocal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarDataSourceProtocal.swift; sourceTree = "<group>"; };
 		045E756420DB938800B6D0A1 /* WeatherDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherDataSource.swift; sourceTree = "<group>"; };
-		04722E5120E115B6006D49C7 /* FakeCalendarDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeCalendarDataSource.swift; sourceTree = "<group>"; };
 		048CF90420D3C28E0094A654 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		04973A3320D4F02A008DDA36 /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
 		04973A3420D4F02A008DDA36 /* NSLayoutConstraint+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSLayoutConstraint+Extensions.swift"; sourceTree = "<group>"; };
@@ -78,11 +79,14 @@
 		04DDA7D420D20F7D00913CB2 /* ContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
 		04DDA7DE20D20F7F00913CB2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		04DDA7E320D20F7F00913CB2 /* OutlookAgendaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OutlookAgendaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		04DDA7E720D20F7F00913CB2 /* OutlookAgendaTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutlookAgendaTests.swift; sourceTree = "<group>"; };
+		04DDA7E720D20F7F00913CB2 /* AgendaViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgendaViewControllerTests.swift; sourceTree = "<group>"; };
 		04DDA7E920D20F7F00913CB2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		04DDA7EE20D20F7F00913CB2 /* OutlookAgendaUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OutlookAgendaUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		04DDA7F220D20F7F00913CB2 /* OutlookAgendaUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutlookAgendaUITests.swift; sourceTree = "<group>"; };
 		04DDA7F420D20F7F00913CB2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		04F67A1B20E26BAE0016DF6E /* UIViewController+UnitTesting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+UnitTesting.swift"; sourceTree = "<group>"; };
+		04F67A1C20E26BAE0016DF6E /* UIView+ViewWithAccessibilityIdentifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+ViewWithAccessibilityIdentifier.swift"; sourceTree = "<group>"; };
+		04F67A1E20E26BAE0016DF6E /* FakeCalendarDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FakeCalendarDataSource.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -195,9 +199,10 @@
 		04DDA7E620D20F7F00913CB2 /* OutlookAgendaTests */ = {
 			isa = PBXGroup;
 			children = (
-				04722E5120E115B6006D49C7 /* FakeCalendarDataSource.swift */,
 				04DDA7E920D20F7F00913CB2 /* Info.plist */,
-				04DDA7E720D20F7F00913CB2 /* OutlookAgendaTests.swift */,
+				04DDA7E720D20F7F00913CB2 /* AgendaViewControllerTests.swift */,
+				04F67A1D20E26BAE0016DF6E /* FakeClass */,
+				04F67A1A20E26BAE0016DF6E /* UTUtils */,
 			);
 			path = OutlookAgendaTests;
 			sourceTree = "<group>";
@@ -209,6 +214,23 @@
 				04DDA7F220D20F7F00913CB2 /* OutlookAgendaUITests.swift */,
 			);
 			path = OutlookAgendaUITests;
+			sourceTree = "<group>";
+		};
+		04F67A1A20E26BAE0016DF6E /* UTUtils */ = {
+			isa = PBXGroup;
+			children = (
+				04F67A1C20E26BAE0016DF6E /* UIView+ViewWithAccessibilityIdentifier.swift */,
+				04F67A1B20E26BAE0016DF6E /* UIViewController+UnitTesting.swift */,
+			);
+			path = UTUtils;
+			sourceTree = "<group>";
+		};
+		04F67A1D20E26BAE0016DF6E /* FakeClass */ = {
+			isa = PBXGroup;
+			children = (
+				04F67A1E20E26BAE0016DF6E /* FakeCalendarDataSource.swift */,
+			);
+			path = FakeClass;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -386,8 +408,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				04DDA7E820D20F7F00913CB2 /* OutlookAgendaTests.swift in Sources */,
-				04722E5220E115B6006D49C7 /* FakeCalendarDataSource.swift in Sources */,
+				04F67A2120E26BAE0016DF6E /* FakeCalendarDataSource.swift in Sources */,
+				04DDA7E820D20F7F00913CB2 /* AgendaViewControllerTests.swift in Sources */,
+				04F67A2020E26BAE0016DF6E /* UIView+ViewWithAccessibilityIdentifier.swift in Sources */,
+				04F67A1F20E26BAE0016DF6E /* UIViewController+UnitTesting.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -244,7 +244,7 @@ extension CalendarViewController: UICollectionViewDelegate {
 
 extension Int {
     fileprivate func itemOffsetY() -> CGFloat {
-        let offsetY = (self/7) * Int(CalendarViewController.Constants.calendarRowHeight)
+        let offsetY = (self / 7) * Int(CalendarViewController.Constants.calendarRowHeight)
         return CGFloat(offsetY)
     }
     
