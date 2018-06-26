@@ -15,8 +15,8 @@ class CalendarViewController: UIViewController {
     
     weak var delegate: CalendarViewControllerDelegate?
     private let calendarDataSource: CalendarDataSourceProtocal
-    private lazy var currentSelectedOrder = calendarDataSource.todayOrder
     private lazy var monthLabelItems: [String: (monthLabel: UIView, offsetY: CGFloat, centerYConstraint: NSLayoutConstraint)] = [:]
+    private var isScrollingCellToVisible = false
     
     lazy private var headerView: CalendarHeaderView = {
         let headerView = CalendarHeaderView.init(frame: .zero)
@@ -74,25 +74,49 @@ class CalendarViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         initView()
+        select(dateOrder: calendarDataSource.todayOrder)
     }
     
     // MARK: - public
 
     func select(dateOrder: Int) {
         guard dateOrder > 0, dateOrder < calendarDataSource.allDaysCount else { return }
-        guard currentSelectedOrder != dateOrder else { return }
-        
-        let isInSomeWeek = ((currentSelectedOrder / 7) == (dateOrder / 7))
-        currentSelectedOrder = dateOrder
-        updateVisibelCellsSelectedState(for: dateOrder)
-        if !collectionView.isTracking && dateOrder >= 7 && !isInSomeWeek {
-            collectionView.scrollToItem(at: IndexPath(item: dateOrder - 7, section: 0), at: .top, animated: true)
+        if let selectedIndexPaths = collectionView.indexPathsForSelectedItems, selectedIndexPaths.contains(dateOrder.indexPathForCalendar()) {
+            return
         }
+        
+        collectionView.selectItem(at: dateOrder.indexPathForCalendar(), animated: false, scrollPosition: [])
+        scrollSelectedItemIfNeed(at: dateOrder)
     }
 }
 
 extension CalendarViewController {
     
+    private func shouldScrollSelectedCellToVisible(at dateOrder: Int) -> Bool {
+        if collectionView.isTracking {
+            return false
+        }
+        if isScrollingCellToVisible {
+            return false
+        }
+        if dateOrder < 7 {
+            return false
+        }
+        let cellOffsetY = dateOrder.itemOffsetY()
+        if cellOffsetY > collectionView.contentOffset.y + Constants.calendarRowHeight + 1 || cellOffsetY < collectionView.contentOffset.y + Constants.calendarRowHeight - 1 {
+            return true
+        }
+        
+        return false
+    }
+    
+    private func scrollSelectedItemIfNeed(at dateOrder: Int) {
+        if shouldScrollSelectedCellToVisible(at: dateOrder) {
+            isScrollingCellToVisible = true
+            collectionView.scrollToItem(at: IndexPath(item: dateOrder - 7, section: 0), at: .top, animated: true)
+        }
+    }
+
     private func initView() {
         view.addSubview(headerView)
         NSLayoutConstraint.addEdgeInsetsConstraints(outerLayoutGuide: view, innerView: headerView, edgeInsets: .zero, rectEdge: [.top, .left, .right])
@@ -104,13 +128,6 @@ extension CalendarViewController {
         
         view.addSubview(overlayView)
         NSLayoutConstraint.addEdgeInsetsConstraints(outerLayoutGuide: view, innerView: overlayView, edgeInsets: UIEdgeInsets(top: Constants.calendarHeadViewHeiht, left: 0, bottom: 0, right: 0))
-    }
-    
-    private func updateVisibelCellsSelectedState(for newSelectedOrder: Int) {
-        let newIndexPath = IndexPath(item: newSelectedOrder, section: 0)
-        collectionView.indexPathsForVisibleItems.forEach { visibileIndex in
-            collectionView.cellForItem(at: visibileIndex)?.isSelected = (visibileIndex == newIndexPath)
-        }
     }
     
     private func showOverlayView() {
@@ -149,7 +166,13 @@ extension CalendarViewController: UICollectionViewDataSource {
 }
 
 extension CalendarViewController: UICollectionViewDelegate {
+    
+    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+        isScrollingCellToVisible = false
+    }
+    
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        isScrollingCellToVisible = false
         delegate?.calendarViewControllerBeginDragging(self)
         showOverlayView()
     }
@@ -170,13 +193,17 @@ extension CalendarViewController: UICollectionViewDelegate {
         hideOverlayView()
     }
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {        
-        select(dateOrder: indexPath.item)
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        scrollSelectedItemIfNeed(at: indexPath.item)
         delegate?.calendarViewController(self, didSelect: indexPath.item)
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        cell.isSelected = (currentSelectedOrder == indexPath.item)
+        var selectedIndexPaths = [calendarDataSource.todayOrder.indexPathForCalendar()]
+        if let indexPaths = collectionView.indexPathsForSelectedItems, !indexPaths.isEmpty {
+            selectedIndexPaths = indexPaths
+        }
+        cell.isSelected = selectedIndexPaths.contains(indexPath)
         
         // add month label on overlay, algin with the day 15th
         if let date = calendarDataSource.date(at: indexPath.item), date.day() == 15 {
@@ -212,5 +239,16 @@ extension CalendarViewController: UICollectionViewDelegate {
                 centerYConstraint.constant = offsetY - currentOffsetY
             }
         }
+    }
+}
+
+extension Int {
+    fileprivate func itemOffsetY() -> CGFloat {
+        let offsetY = (self/7) * Int(CalendarViewController.Constants.calendarRowHeight)
+        return CGFloat(offsetY)
+    }
+    
+    fileprivate func indexPathForCalendar() -> IndexPath {
+        return IndexPath(item: self, section: 0)
     }
 }

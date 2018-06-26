@@ -28,7 +28,7 @@ class AgendaTableViewCell: UITableViewCell {
         stackView.axis = .vertical
         stackView.alignment = .leading
         stackView.distribution = .fill
-        stackView.spacing = 7 /// If the value bigger than 9, I will get a warning in console: [LayoutConstraints] Unable to simultaneously satisfy constraints, I do not dig out cause.
+        stackView.spacing = 7
         return stackView
     }()
     
