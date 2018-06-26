@@ -125,7 +125,8 @@ extension AgendaViewController: UITableViewDelegate {
         guard let tableView = scrollView as? UITableView else { return }
         guard isInitializeComplete else { return }
         
-        let offset = tableView.contentOffset
+        var offset = tableView.contentOffset
+        offset.y += 1  // let the offset locate in the visible range
         if let indexPath = tableView.indexPathForRow(at: offset),
             shouldUpdateSelectedOrderAndNoticeDelegate {
             
