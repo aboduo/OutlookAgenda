@@ -1,6 +1,7 @@
 @testable import OutlookAgenda
 import XCTest
 
+// Just add two test for demo
 class AgendaViewControllerTests: XCTestCase {
     
     private var fakeCalendarDataSource: FakeCalendarDataSource!

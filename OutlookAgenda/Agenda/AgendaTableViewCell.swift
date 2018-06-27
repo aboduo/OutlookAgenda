@@ -165,6 +165,7 @@ class AgendaTableViewCell: UITableViewCell {
         titleLabel.text = event.title ?? NSLocalizedString("Untitled", comment: "")
         contentStackView.addArrangedSubview(titleLabel)
         
+        // TODO: need to limit the count of avatar
         if let participants = event.participants, participants.count > 0 {
             event.participants?.forEach { event in
                 let avatarImageView = UIImageView(image: UIImage(named: event.avatar ?? "avatar_default"))

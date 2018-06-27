@@ -92,6 +92,7 @@ class CalendarViewController: UIViewController {
 
 extension CalendarViewController {
     
+    // MARK: - Handle scrolling caused by Agenda
     private func shouldScrollSelectedCellToVisible(at dateOrder: Int) -> Bool {
         if collectionView.isTracking {
             return false
@@ -117,6 +118,8 @@ extension CalendarViewController {
         }
     }
 
+    // MARK: - InitView
+    
     private func initView() {
         view.addSubview(headerView)
         NSLayoutConstraint.addEdgeInsetsConstraints(outerLayoutGuide: view, innerView: headerView, edgeInsets: .zero, rectEdge: [.top, .left, .right])
@@ -130,6 +133,7 @@ extension CalendarViewController {
         NSLayoutConstraint.addEdgeInsetsConstraints(outerLayoutGuide: view, innerView: overlayView, edgeInsets: UIEdgeInsets(top: Constants.calendarHeadViewHeiht, left: 0, bottom: 0, right: 0))
     }
     
+    // MARK: - monthLabel Overlay
     private func showOverlayView() {
         UIView.animate(withDuration: 0.25) {
             self.overlayView.alpha = 1
@@ -148,6 +152,45 @@ extension CalendarViewController {
         label.text = monthString
         label.textColor = .black
         return label
+    }
+    
+    private func addMonthLabel(for date: Date, at offset: CGPoint) {
+        let monthString = date.monthStringForOverlay()
+        let monthLabel = createMonthLabel(monthString: monthString)
+        overlayView.addSubview(monthLabel)
+        
+        let offsetInOverlay = collectionView.convert(offset, to: overlayView)
+        monthLabel.centerXAnchor.constraint(equalTo: overlayView.centerXAnchor).isActive = true
+        let centerYConstraint = monthLabel.centerYAnchor.constraint(equalTo: overlayView.topAnchor, constant: offsetInOverlay.y)
+        centerYConstraint.isActive = true
+        monthLabelItems[monthString] = (monthLabel, offset.y, centerYConstraint)
+    }
+    
+    private func removeMonthLabel(for date: Date) {
+        let monthString = date.monthStringForOverlay()
+        if let (monthLabel, _, _) = monthLabelItems[monthString] {
+            monthLabel.removeFromSuperview()
+        }
+        monthLabelItems.removeValue(forKey: monthString)
+    }
+    
+    private func updateMonthLabelPostion(currentOffset: CGPoint) {
+        monthLabelItems.forEach { _, value in
+            let (_, offsetY, centerYConstraint) = value
+            centerYConstraint.constant = offsetY - currentOffset.y
+        }
+    }
+    
+    // MARK: - Aligned Offset
+    
+    private func alignedTargetContentOffset(for targetContentOffset: CGPoint, on scrollView: UIScrollView) -> CGPoint {
+        let offsetY = targetContentOffset.y
+        guard offsetY > scrollView.contentInset.top, offsetY < (scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom) else {
+            return targetContentOffset
+        }
+        let nearestRow = round( offsetY / Constants.calendarRowHeight )
+        let alignedOffset = CGPoint(x: 0, y: nearestRow * Constants.calendarRowHeight)
+        return alignedOffset
     }
 }
 
@@ -180,13 +223,7 @@ extension CalendarViewController: UICollectionViewDelegate {
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         guard collectionView == scrollView else { return }
 
-        let offsetY = targetContentOffset.pointee.y
-        guard offsetY > scrollView.contentInset.top, offsetY < (scrollView.contentSize.height - scrollView.bounds.size.height + scrollView.contentInset.bottom) else {
-            return
-        }
-        let nearestRow = round( offsetY / Constants.calendarRowHeight )
-        let alignedOffset = CGPoint(x: 0, y: nearestRow * Constants.calendarRowHeight)
-        targetContentOffset.pointee = alignedOffset
+        targetContentOffset.pointee = alignedTargetContentOffset(for: targetContentOffset.pointee, on: scrollView)
     }
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
@@ -199,45 +236,29 @@ extension CalendarViewController: UICollectionViewDelegate {
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        
         var selectedIndexPaths = [calendarDataSource.todayOrder.indexPathForCalendar()]
         if let indexPaths = collectionView.indexPathsForSelectedItems, !indexPaths.isEmpty {
             selectedIndexPaths = indexPaths
         }
         cell.isSelected = selectedIndexPaths.contains(indexPath)
         
-        // add month label on overlay, algin with the day 15th
         if let date = calendarDataSource.date(at: indexPath.item), date.day() == 15 {
-            let monthString = date.monthStringForOverlay()
-            let monthLabel = createMonthLabel(monthString: monthString)
-            overlayView.addSubview(monthLabel)
-            
-            let cellCenterInOverlay = collectionView.convert(cell.center, to: overlayView)
-            monthLabel.centerXAnchor.constraint(equalTo: overlayView.centerXAnchor).isActive = true
-            let centerYConstraint = monthLabel.centerYAnchor.constraint(equalTo: overlayView.topAnchor, constant: cellCenterInOverlay.y)
-            centerYConstraint.isActive = true
-            monthLabelItems[monthString] = (monthLabel, cell.center.y, centerYConstraint)
+            addMonthLabel(for: date, at: cell.center)
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         
-        // remove month label outside
         if let date = calendarDataSource.date(at: indexPath.item), date.day() == 15 {
-            let monthString = date.monthStringForOverlay()
-            if let (monthLabel, _, _) = monthLabelItems[monthString] {
-                monthLabel.removeFromSuperview()
-            }
-            monthLabelItems.removeValue(forKey: monthString)
+            removeMonthLabel(for: date)
         }
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if let alpha = overlayView.backgroundColor?.cgColor.alpha, alpha > 0 {
-            monthLabelItems.forEach { _, value in
-                let currentOffsetY = overlayView.convert(CGPoint.zero, to: collectionView).y
-                let (_, offsetY, centerYConstraint) = value
-                centerYConstraint.constant = offsetY - currentOffsetY
-            }
+            let currentOffset = overlayView.convert(CGPoint.zero, to: collectionView)
+            updateMonthLabelPostion(currentOffset: currentOffset)
         }
     }
 }
