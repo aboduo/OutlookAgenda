@@ -199,8 +199,8 @@
 		04DDA7E620D20F7F00913CB2 /* OutlookAgendaTests */ = {
 			isa = PBXGroup;
 			children = (
-				04DDA7E920D20F7F00913CB2 /* Info.plist */,
 				04DDA7E720D20F7F00913CB2 /* AgendaViewControllerTests.swift */,
+				04DDA7E920D20F7F00913CB2 /* Info.plist */,
 				04F67A1D20E26BAE0016DF6E /* FakeClass */,
 				04F67A1A20E26BAE0016DF6E /* UTUtils */,
 			);

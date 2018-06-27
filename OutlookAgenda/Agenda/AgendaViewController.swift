@@ -2,7 +2,7 @@ import UIKit
 
 protocol AgendaViewControllerDelegate: class {
     func agendaViewControllerBeginDragging(_ agendaViewController: AgendaViewController)
-    func agendaViewController(_ agendaViewController: AgendaViewController, didScrollTo dateOrder: Int)
+    func agendaViewController(_ agendaViewController: AgendaViewController, didScrollTo dateOrder: Int, fraction: CGFloat, ignoreFraction: Bool)
 }
 
 class AgendaViewController: UIViewController {
@@ -121,12 +121,14 @@ extension AgendaViewController: UITableViewDelegate {
         guard let tableView = scrollView as? UITableView else { return }
         guard isInitializeComplete else { return }
         
-        var offset = tableView.contentOffset
-        offset.y += 1  // let the offset locate in the visible range
-        if let indexPath = tableView.indexPathForRow(at: offset),
-            shouldUpdateSelectedOrderAndNoticeDelegate {
-            
-            delegate?.agendaViewController(self, didScrollTo: indexPath.section)
+        let offset = tableView.contentOffset
+        if let indexPath = tableView.indexPathForRow(at: offset), shouldUpdateSelectedOrderAndNoticeDelegate {
+            let sectionRect = tableView.rect(forSection: indexPath.section)
+            let fraction = (offset.y - sectionRect.minY) / sectionRect.height
+
+            // we can add a backscroll animation when ignoreFraction
+            let ignoreFraction = !(tableView.isDragging || tableView.isDecelerating)
+            delegate?.agendaViewController(self, didScrollTo: indexPath.section, fraction: fraction, ignoreFraction: ignoreFraction)
         }
     }
     

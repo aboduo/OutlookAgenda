@@ -51,16 +51,39 @@ final class CalendarCollectionViewCell: UICollectionViewCell {
         return dateFormatter
     }()
     
+    private let slidableBackgroundView: UIView = {
+        let view = UIView(frame: .zero)
+        view.accessibilityIdentifier = "selectedBackgroundView"
+        view.translatesAutoresizingMaskIntoConstraints = false
+        //        view.backgroundColor =  UIColor(hex: 0x0067A5)
+        view.backgroundColor = .green
+        view.isHidden = true
+        return view
+    }()
+    
+    private let backView: UIView = {
+        let view = UIView(frame: .zero)
+        view.accessibilityIdentifier = "backView"
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    private var centerXConstraint: NSLayoutConstraint?
+    
     // MARK: - Lifecycle Methods
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        backgroundView = UIView(frame: .zero)
-        backgroundView?.backgroundColor = UIColor(hex: 0xEDEDED)
+        clipsToBounds = true
+        backgroundView = backView
         
-        selectedBackgroundView = UIView(frame: .zero)
-        selectedBackgroundView?.backgroundColor = UIColor(hex: 0x0067A5)
+        addSubview(slidableBackgroundView)
+        slidableBackgroundView.widthAnchor.constraint(equalTo: widthAnchor).isActive = true
+        slidableBackgroundView.heightAnchor.constraint(equalTo: heightAnchor).isActive = true
+        slidableBackgroundView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        centerXConstraint = slidableBackgroundView.centerXAnchor.constraint(equalTo: centerXAnchor)
+        centerXConstraint?.isActive = true
         
         addSubview(stackView)
         NSLayoutConstraint.addEdgeInsetsConstraints(outerLayoutGuide: contentView, innerView: stackView)
@@ -75,6 +98,12 @@ final class CalendarCollectionViewCell: UICollectionViewCell {
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("This subclass does not support NSCoding.")
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        slidableBackgroundView.isHidden = true
     }
     
     func load(date: Date) {
@@ -102,5 +131,11 @@ final class CalendarCollectionViewCell: UICollectionViewCell {
         } else {
             yearLabel.isHidden = true
         }
+    }
+    
+    func updateState(isSelected: Bool, fraction: CGFloat = 0) {
+        let isInVisibleRange = fraction > -1 && fraction < 1
+        slidableBackgroundView.isHidden = !isSelected || !isInVisibleRange
+        centerXConstraint?.constant = isInVisibleRange ? bounds.width * fraction : 0
     }
 }

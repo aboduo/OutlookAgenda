@@ -55,7 +55,7 @@ class ContainerViewController: UIViewController {
     
     public func focusOnToday(gesture: UIGestureRecognizer) {
         if let calendarDataSource = calendarDataSource {
-            calendarViewController?.select(dateOrder: calendarDataSource.todayOrder)
+            calendarViewController?.update(dateOrder: calendarDataSource.todayOrder)
             agendaViewController?.scroll(to: calendarDataSource.todayOrder, animated: true)
         }
     }
@@ -160,8 +160,7 @@ extension ContainerViewController: AgendaViewControllerDelegate {
         calendarViewControllerHeightConstraint?.constant = Constants.calendarTallHeight
     }
     
-    func agendaViewController(_ agendaViewController: AgendaViewController, didScrollTo dateOrder: Int) {
-        calendarViewController?.select(dateOrder: dateOrder)
-        updateTitle(at: dateOrder)
+    func agendaViewController(_ agendaViewController: AgendaViewController, didScrollTo dateOrder: Int, fraction: CGFloat, ignoreFraction: Bool) {
+        calendarViewController?.update(dateOrder: dateOrder, fraction: fraction, ignoreFraction: ignoreFraction)
     }
 }

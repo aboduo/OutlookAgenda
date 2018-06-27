@@ -16,7 +16,10 @@ class CalendarViewController: UIViewController {
     weak var delegate: CalendarViewControllerDelegate?
     private let calendarDataSource: CalendarDataSourceProtocal
     private lazy var monthLabelItems: [String: (monthLabel: UIView, offsetY: CGFloat, centerYConstraint: NSLayoutConstraint)] = [:]
-    private var isScrollingCellToVisible = false
+    
+    private var lastDateOrder: Int = 0
+    private var lastFraction: CGFloat = 0
+    private var isProgramScrollingRectToTop = false // prevent scrolling repeated
     
     lazy private var headerView: CalendarHeaderView = {
         let headerView = CalendarHeaderView.init(frame: .zero)
@@ -74,50 +77,67 @@ class CalendarViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         initView()
-        select(dateOrder: calendarDataSource.todayOrder)
+        
+        view.setNeedsLayout()
+        view.layoutIfNeeded()
+        update(dateOrder: calendarDataSource.todayOrder)
     }
     
     // MARK: - public
-
-    func select(dateOrder: Int) {
-        guard dateOrder > 0, dateOrder < calendarDataSource.allDaysCount else { return }
-        if let selectedIndexPaths = collectionView.indexPathsForSelectedItems, selectedIndexPaths.contains(dateOrder.indexPathForCalendar()) {
-            return
+    
+    func update(dateOrder: Int, fraction: CGFloat = 0, ignoreFraction: Bool = true) {
+        // TODO: we can add a back scroll animaiton when ignoreFraction
+        let effectiveFraction = ignoreFraction ? 0 : fraction
+        
+        let lastLeftOrder = lastDateOrder
+        let lastRightOrder = lastDateOrder + 1
+        
+        let currentLeftOrder = dateOrder
+        let currentRightOrder = dateOrder + 1
+        
+        if let lastLeftCell = collectionView.cellForItem(at: lastLeftOrder.indexPathForCalendar()) as? CalendarCollectionViewCell {
+            lastLeftCell.updateState(isSelected: false)
+        }
+        if let lastRigtCell = collectionView.cellForItem(at: lastRightOrder.indexPathForCalendar()) as? CalendarCollectionViewCell {
+            lastRigtCell.updateState(isSelected: false)
         }
         
-        collectionView.selectItem(at: dateOrder.indexPathForCalendar(), animated: false, scrollPosition: [])
-        scrollSelectedItemIfNeed(at: dateOrder)
+        if let leftCell = collectionView.cellForItem(at: currentLeftOrder.indexPathForCalendar()) as? CalendarCollectionViewCell {
+            leftCell.updateState(isSelected: true, fraction: effectiveFraction)
+        }
+        if let rightCell = collectionView.cellForItem(at: currentRightOrder.indexPathForCalendar()) as? CalendarCollectionViewCell {
+            rightCell.updateState(isSelected: true, fraction: effectiveFraction - 1)
+        }
+        lastDateOrder = dateOrder
+        lastFraction = fraction
+
+        if shouldProgramScrollToTop(for: dateOrder) {
+            isProgramScrollingRectToTop = true
+            collectionView.scrollToItem(at: IndexPath(item: dateOrder, section: 0), at: .top, animated: true)
+        }
     }
 }
 
 extension CalendarViewController {
     
     // MARK: - Handle scrolling caused by Agenda
-    private func shouldScrollSelectedCellToVisible(at dateOrder: Int) -> Bool {
+
+    private func shouldProgramScrollToTop(for dateOrder: Int) -> Bool {
+        if isProgramScrollingRectToTop {
+            return false
+        }
         if collectionView.isTracking {
             return false
         }
-        if isScrollingCellToVisible {
-            return false
-        }
-        if dateOrder < 7 {
-            return false
-        }
-        let cellOffsetY = dateOrder.itemOffsetY()
-        if cellOffsetY > collectionView.contentOffset.y + Constants.calendarRowHeight + 1 || cellOffsetY < collectionView.contentOffset.y + Constants.calendarRowHeight - 1 {
+        if dateOrder.itemMinY() < collectionView.contentOffset.y {
             return true
         }
-        
+        if (dateOrder + 1).itemMaxY() > collectionView.contentOffset.y + Constants.calendarRowHeight * 2 {
+            return true
+        }
         return false
     }
     
-    private func scrollSelectedItemIfNeed(at dateOrder: Int) {
-        if shouldScrollSelectedCellToVisible(at: dateOrder) {
-            isScrollingCellToVisible = true
-            collectionView.scrollToItem(at: IndexPath(item: dateOrder - 7, section: 0), at: .top, animated: true)
-        }
-    }
-
     // MARK: - InitView
     
     private func initView() {
@@ -211,11 +231,11 @@ extension CalendarViewController: UICollectionViewDataSource {
 extension CalendarViewController: UICollectionViewDelegate {
     
     func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
-        isScrollingCellToVisible = false
+        isProgramScrollingRectToTop = false
     }
     
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        isScrollingCellToVisible = false
+        isProgramScrollingRectToTop = false
         delegate?.calendarViewControllerBeginDragging(self)
         showOverlayView()
     }
@@ -231,17 +251,14 @@ extension CalendarViewController: UICollectionViewDelegate {
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        scrollSelectedItemIfNeed(at: indexPath.item)
+        update(dateOrder: indexPath.item)
         delegate?.calendarViewController(self, didSelect: indexPath.item)
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        
-        var selectedIndexPaths = [calendarDataSource.todayOrder.indexPathForCalendar()]
-        if let indexPaths = collectionView.indexPathsForSelectedItems, !indexPaths.isEmpty {
-            selectedIndexPaths = indexPaths
+        if indexPath.item == lastDateOrder || indexPath.item == (lastDateOrder + 1) {
+            update(dateOrder: lastDateOrder, fraction: lastFraction, ignoreFraction: false)
         }
-        cell.isSelected = selectedIndexPaths.contains(indexPath)
         
         if let date = calendarDataSource.date(at: indexPath.item), date.day() == 15 {
             addMonthLabel(for: date, at: cell.center)
@@ -264,8 +281,13 @@ extension CalendarViewController: UICollectionViewDelegate {
 }
 
 extension Int {
-    fileprivate func itemOffsetY() -> CGFloat {
+    fileprivate func itemMinY() -> CGFloat {
         let offsetY = (self / 7) * Int(CalendarViewController.Constants.calendarRowHeight)
+        return CGFloat(offsetY)
+    }
+    
+    fileprivate func itemMaxY() -> CGFloat {
+        let offsetY = itemMinY() + CalendarViewController.Constants.calendarRowHeight
         return CGFloat(offsetY)
     }
     
