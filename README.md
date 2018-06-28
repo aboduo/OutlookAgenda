@@ -1,6 +1,6 @@
 # OutlookAgenda   
 My solution for [iOS Engineer Challenge](https://github.com/outlook/jobs/blob/master/instructions/ios/ios-engineer.md) 
-Welcome @ogkent @eddiekim to review and give comments, thanks
+Welcome to review and give comments, thanks
 
 ## Prerequisite
 - iOS 11, iPhoneX, do not test in other devices
